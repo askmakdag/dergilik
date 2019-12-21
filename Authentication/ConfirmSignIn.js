@@ -2,10 +2,8 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TextInput,
-    View,
-    Alert,
-    Dimensions,
-    Button,
+    View, Alert,
+    Dimensions, Button,
 } from 'react-native';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
@@ -39,10 +37,6 @@ class ConfirmSignIn extends Component {
     };
 
     answerCustomChallenge = async (AuthUser, answer) => {
-        console.log('answer: ', answer);
-        console.log('answertype answer: ', typeof answer);
-        console.log('AuthUser AuthUserrrr: ', AuthUser);
-
         try {
             let user = await Auth.sendCustomChallengeAnswer(AuthUser, answer);
             console.log('userrr: ', user);
@@ -55,9 +49,6 @@ class ConfirmSignIn extends Component {
     ConfirmSignIn = async () => {
         const {confirmation_code} = this.state;
         const AuthUser = this.props.navigation.state.params.AuthUser;
-        console.log('user: ', AuthUser);
-        console.log('confirmation_code: ', confirmation_code);
-
 
         try {
             const confirmation = confirmation_code.toString();

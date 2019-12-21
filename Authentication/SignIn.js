@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {
     StyleSheet,
-    TouchableOpacity,
-    Text,
     TextInput,
     View,
     Alert,
@@ -57,8 +55,6 @@ class SignIn extends Component {
 
                     <Button title={'Kayıt Ol'} onPress={() => this.props.navigation.navigate('SignUp')}/>
                 </View>
-
-
             </View>
         );
     }
