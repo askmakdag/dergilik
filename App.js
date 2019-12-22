@@ -2,7 +2,7 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
 // goes here.
-import HomeScreen from './HomeScreen';
+import HomeScreen from './src/HomeScreen';
 import SignIn from './Authentication/SignIn';
 import SignUp from './Authentication/SignUp';
 import AuthLoadingScreen from './AuthLoadingScreen';
