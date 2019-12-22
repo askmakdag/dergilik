@@ -27,7 +27,6 @@ class ConfirmSignIn extends Component {
 
     isAuthenticated = async () => {
         try {
-            console.log('selam');
             await Auth.currentAuthenticatedUser();
             return true;
         } catch (err) {
@@ -58,7 +57,7 @@ class ConfirmSignIn extends Component {
                 Alert.alert('Doğrulama Kodunuzu girin lütfen.');
             } else if (loginSucceeded) {
                 console.log('successully confirmed!');
-                this.props.navigation.navigate('HomeScreen');
+                this.props.navigation.navigate('App');
             } else {
                 console.log('error confirming! ');
                 Alert.alert('Kod doğru değil!');
@@ -66,7 +65,6 @@ class ConfirmSignIn extends Component {
         } catch (e) {
             console.log('error confirming! ', e.message);
         }
-
     };
 
     render() {
