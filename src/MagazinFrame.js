@@ -1,6 +1,5 @@
-// Homescreen.js
 import React, {Component} from 'react';
-import {Dimensions, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import aws_credentials from '../aws_credentials';
