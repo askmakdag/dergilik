@@ -5,10 +5,10 @@ import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 
 const s3 = new AWS.S3({
-    region: 'us-east-1',
+    region: '',
     credentials: {
-        accessKeyId: 'AKIAT3ESAL4HE4VSOEOY',
-        secretAccessKey: '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',
+        accessKeyId: '',
+        secretAccessKey: '',
     },
 });
 
@@ -26,7 +26,7 @@ class MagazinFrame extends Component {
 
     getUrl() {
         const params = {
-            Bucket: 'dergilikotp-userfiles-mobilehub-717446809',
+            Bucket: '',
             Key: 'uploads/' + this.props.magazinName + ' Cover.png',
             Expires: 60,
         };
