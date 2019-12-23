@@ -3,7 +3,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
-import aws_credentials from '../assets/aws_credentials';
+import aws_credentials from '../aws_credentials';
 
 const s3 = new AWS.S3({
     region: aws_credentials.region,

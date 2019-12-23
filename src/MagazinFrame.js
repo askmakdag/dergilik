@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Dimensions, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
-import aws_credentials from '../assets/aws_credentials';
+import aws_credentials from '../aws_credentials';
 
 const s3 = new AWS.S3({
     region: aws_credentials.region,
