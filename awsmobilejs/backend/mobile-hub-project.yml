@@ -19,5 +19,8 @@ features:
       sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider 
         attributes:
           user-pool-id: us-east-1_0iVsT8Idw
+  user-files: !com.amazonaws.mobilehub.v0.UserFiles 
+    attributes:
+      enabled: true
 name: dergilikOTP
 region: us-east-1
