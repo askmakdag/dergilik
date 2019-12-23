@@ -3,12 +3,13 @@ import React, {Component} from 'react';
 import {Dimensions, Image, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
+import aws_credentials from '../assets/aws_credentials';
 
 const s3 = new AWS.S3({
-    region: 'us-east-1',
+    region: aws_credentials.region,
     credentials: {
-        accessKeyId: 'AKIAT3ESAL4HEBKHOTUZ',
-        secretAccessKey: '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',
+        accessKeyId: aws_credentials.accessKeyId,
+        secretAccessKey: aws_credentials.secretAccessKey,
     },
 });
 
@@ -26,7 +27,7 @@ class MagazinFrame extends Component {
 
     getUrl() {
         const params = {
-            Bucket: 'dergilikotp-userfiles-mobilehub-717446809',
+            Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.magazinName + ' Cover.png',
             Expires: 60,
         };

@@ -3,12 +3,13 @@ import {StyleSheet, Dimensions} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
+import aws_credentials from '../assets/aws_credentials';
 
 const s3 = new AWS.S3({
-    region: 'us-east-1',
+    region: aws_credentials.region,
     credentials: {
-        accessKeyId: 'AKIAT3ESAL4HE4VSOEOY',
-        secretAccessKey: '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',
+        accessKeyId: aws_credentials.accessKeyId,
+        secretAccessKey: aws_credentials.secretAccessKey,
     },
 });
 
@@ -21,7 +22,7 @@ class MagazinComponent extends Component {
 
     getUrl() {
         const params = {
-            Bucket: 'dergilikotp-userfiles-mobilehub-717446809',
+            Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + '.pdf',
             Expires: 60,
         };

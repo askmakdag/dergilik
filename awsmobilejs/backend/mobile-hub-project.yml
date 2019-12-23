@@ -22,5 +22,5 @@ features:
   user-files: !com.amazonaws.mobilehub.v0.UserFiles 
     attributes:
       enabled: true
-name: dergilikOTP
+name: dergilik
 region: us-east-1
