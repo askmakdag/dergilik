@@ -9,7 +9,7 @@ const s3 = new AWS.S3({
     region: aws_credentials.region,
     credentials: {
         accessKeyId: aws_credentials.accessKeyId,
-        secretAccessKey: aws_credentials.secretAccessKey,
+        secretAccessKey: aws_credentials.secretAccessKey, 
     },
 });
 
