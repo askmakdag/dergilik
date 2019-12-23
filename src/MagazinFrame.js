@@ -10,7 +10,7 @@ const s3 = new AWS.S3({
     credentials: {
         accessKeyId: aws_credentials.accessKeyId,
         secretAccessKey: aws_credentials.secretAccessKey,
-    },
+    }, 
 });
 
 class MagazinFrame extends Component {
