@@ -7,8 +7,8 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 const s3 = new AWS.S3({
     region: 'us-east-1',
     credentials: {
-        accessKeyId: 'AKIAT3ESAL4HE4VSOEOY',
-        secretAccessKey: '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',
+        accessKeyId: 'AKIAT3ESAL4HEBKHOTUZ',
+        secretAccessKey: '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',
     },
 });
 
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#234311',
-        height: Dimensions.get('window').height * 0.55,
+        height: Dimensions.get('window').width * 1.2,
         width: Dimensions.get('window').width * 0.9,
         marginVertical: 10,
     },
