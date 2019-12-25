@@ -17,7 +17,6 @@ export default class HomeScreen extends Component {
         this.props.navigation.navigate('SignIn');
     };*/
 
-
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>

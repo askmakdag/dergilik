@@ -1,5 +1,6 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 
 // goes here.
 import HomeScreen from './src/HomeScreen';
@@ -19,11 +20,27 @@ const AppStack = createStackNavigator({
 });
 const AuthStack = createStackNavigator({SignIn: SignIn, SignUp: SignUp, ConfirmSignIn: ConfirmSignIn});
 
+const MainTabs = createBottomTabNavigator({
+    Feed: {
+        screen: AppStack,
+        navigationOptions: {
+            tabBarLabel: 'Home',
+        },
+    },
+    Search: {
+        screen: AppStack,
+        navigationOptions: {
+            tabBarLabel: 'Detail',
+        },
+    },
+});
+
+
 export default createAppContainer(
     createSwitchNavigator(
         {
             AuthLoading: AuthLoadingScreen,
-            App: AppStack,
+            App: MainTabs,
             Auth: AuthStack,
         },
         {
