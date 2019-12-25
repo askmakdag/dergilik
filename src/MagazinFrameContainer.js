@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         marginLeft: '2.5%',
-        marginVertical: 5,
+        marginTop: 8,
     },
     searchBoxStyle: {
         alignItems: 'center',

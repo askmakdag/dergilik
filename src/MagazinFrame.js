@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, Image, Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import aws_credentials from '../aws_credentials';
@@ -44,11 +44,16 @@ class MagazinFrame extends Component {
         await this.setState({path: path});
     };
 
+    saveMagazin = () => {
+        Alert.alert('Emin misin?');
+    };
+
     render() {
         const {path} = this.state;
 
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazin()}>
+            <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazin()}
+                              onLongPress={() => this.saveMagazin()}>
                 <Image
                     style={styles.coverStyle}
                     source={{uri: path}}
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         marginTop: 5,
-        marginBottom:3,
+        marginBottom: 3,
         width: Dimensions.get('window').width * 0.9,
     },
     magazinInfoTextStyle: {
