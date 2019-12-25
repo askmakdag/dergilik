@@ -17,6 +17,12 @@ class MagazinFrameContainer extends Component {
                 {magazinId: 1, year: 2019, name: 'The Economist USA 2019'},
                 {magazinId: 2, year: 2018, name: 'Enterpreneur USA 2018'},
             ],
+            magazinsX: [
+                {magazinId: 4, year: 2017, name: 'NME Camila Cebello'},
+                {magazinId: 3, year: 2020, name: 'iPad & iPhone'},
+                {magazinId: 1, year: 2019, name: 'The Economist USA 2019'},
+                {magazinId: 2, year: 2018, name: 'Enterpreneur USA 2018'},
+            ],
         };
     }
 
@@ -40,6 +46,17 @@ class MagazinFrameContainer extends Component {
         this.setState({
             key: value,
         });
+
+        let json = this.state.magazinsX;
+        const result = json.filter(word => word.name.indexOf(value) >= 0);
+        if (result.length === 0) {
+            /** Aranan bulunamaz ise hepsini listele.*/
+            this.setState({magazins: this.state.magazinsX});
+        } else {
+            /** Aranan bulunur ise arananı listele.*/
+            this.setState({magazins: result});
+        }
+        //console.log('result: ', result);
     }
 
     sortBy = (type) => {
