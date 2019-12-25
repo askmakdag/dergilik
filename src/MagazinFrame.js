@@ -45,7 +45,19 @@ class MagazinFrame extends Component {
     };
 
     saveMagazin = () => {
-        Alert.alert('Emin misin?');
+        Alert.alert(
+            this.props.magazinName,
+            'Dergiyi kaydetmek istediğinize emin misiniz?',
+            [
+                {
+                    text: 'İptal',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'Kaydet', onPress: () => console.log('OK Pressed')},
+            ],
+            {cancelable: false},
+        );
     };
 
     render() {
