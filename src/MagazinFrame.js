@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Dimensions, Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, Image, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import aws_credentials from '../aws_credentials';
@@ -53,6 +53,11 @@ class MagazinFrame extends Component {
                     style={styles.coverStyle}
                     source={{uri: path}}
                 />
+                <View style={styles.magazinInfoContainerStyle}>
+                    <Text style={styles.magazinInfoTextStyle}> {this.props.magazinName} </Text>
+                    <Text style={styles.magazinInfoTextStyle}> {this.props.year} </Text>
+
+                </View>
             </TouchableOpacity>
         );
     }
@@ -63,8 +68,8 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#234311',
-        height: Dimensions.get('window').width * 1.2,
+        backgroundColor: '#DFECEB',
+        height: Dimensions.get('window').width * 1.33,
         width: Dimensions.get('window').width * 0.9,
         marginVertical: 10,
     },
@@ -74,6 +79,18 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover',
         padding: 5,
+    },
+    magazinInfoContainerStyle: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        marginTop: 5,
+        marginBottom:3,
+        width: Dimensions.get('window').width * 0.9,
+    },
+    magazinInfoTextStyle: {
+        fontSize: 15,
+        fontWeight: '400',
+        color: '#202323',
     },
 });
 
