@@ -1,6 +1,7 @@
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
+import React from 'react';
 
 // goes here.
 import HomeScreen from './src/HomeScreen';
@@ -20,12 +21,16 @@ const AppStack = createStackNavigator({
     MagazinComponent: MagazinComponent,
 });
 const AuthStack = createStackNavigator({SignIn: SignIn, SignUp: SignUp, ConfirmSignIn: ConfirmSignIn});
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainTabs = createBottomTabNavigator({
     Feed: {
         screen: AppStack,
         navigationOptions: {
             tabBarLabel: 'Home',
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="home" size={30} color="#900"/>
+            ),
         },
     },
     Search: {
