@@ -11,30 +11,16 @@ class MagazinFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazins: [
-                {magazinId: 4, year: 2017, name: 'NME Camila Cebello'},
-                {magazinId: 3, year: 2020, name: 'iPad & iPhone'},
-                {magazinId: 1, year: 2019, name: 'The Economist USA 2019'},
-                {magazinId: 2, year: 2018, name: 'Enterpreneur USA 2018'},
-            ],
-            magazinsX: [
-                {magazinId: 4, year: 2017, name: 'NME Camila Cebello'},
-                {magazinId: 3, year: 2020, name: 'iPad & iPhone'},
-                {magazinId: 1, year: 2019, name: 'The Economist USA 2019'},
-                {magazinId: 2, year: 2018, name: 'Enterpreneur USA 2018'},
-            ],
+            magazins: [],
+            magazinsX: [],
         };
     }
 
     componentDidMount() {
-        axios.get('https://rjhp9hv0ql.execute-api.us-east-1.amazonaws.com/dev/magazin/', {
-            params: {
-                magazinId: '123',
-            },
-        })
+        axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
                     console.log('Get API Response: ', response);
-
+                    this.setState({magazins: response.data.Items, magazinsX: response.data.Items});
                 },
             )
             .catch(function (error) {
@@ -61,6 +47,7 @@ class MagazinFrameContainer extends Component {
 
     sortBy = (type) => {
         let json = this.state.magazins;
+        this.setState({modalVisible: false});
 
         if (type === 'DATE') {
             json.sort(function (a, b) {
@@ -88,6 +75,7 @@ class MagazinFrameContainer extends Component {
                     <TextInput
                         style={styles.searchBoxStyle}
                         placeholderTextColor={'#8E9494'}
+                        color={"#000"}
                         placeholder={'Dergi Ara'}
                         onChangeText={value => this.onChangeText('search_text', value)}
                         multiline={false}

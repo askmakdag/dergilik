@@ -40,7 +40,6 @@ class MagazinComponent extends Component {
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + '.pdf',
-            Expires: 60,
         };
         const url = s3.getSignedUrl('getObject', params);
         console.log('generated url: ', url);
@@ -54,10 +53,11 @@ class MagazinComponent extends Component {
             cache: true,
         };
 
-        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
+        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64, cache: true};
+        console.log('src: ', 'data:application/pdf;base64,' + this.state.magazin_base64);
 
         return <Pdf
-            source={src}
+            source={source}
             style={styles.pdf}
         />;
     }
