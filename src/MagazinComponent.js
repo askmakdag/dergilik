@@ -13,12 +13,28 @@ const s3 = new AWS.S3({
     },
 });
 
+import SQLite from 'react-native-sqlite-2';
+
+const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
+
 class MagazinComponent extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            magazin_base64: '',
+        };
     };
+
+    componentWillMount() {
+        db.transaction((tx) => {
+            tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
+                let row = results.rows.item(0);
+                console.log('row: ', row);
+                this.setState({magazin_base64: row.magazin_base64});
+            });
+        });
+    }
 
     getUrl() {
         const params = {
@@ -38,8 +54,10 @@ class MagazinComponent extends Component {
             cache: true,
         };
 
+        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
+
         return <Pdf
-            source={source}
+            source={src}
             style={styles.pdf}
         />;
     }

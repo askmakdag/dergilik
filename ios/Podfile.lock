@@ -229,6 +229,8 @@ PODS:
     - React
   - RNReanimated (1.4.0):
     - React
+  - RNSqlite2 (1.0.0):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -264,6 +266,7 @@ DEPENDENCIES:
   - RNAWSCognito (from `../node_modules/amazon-cognito-identity-js`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
+  - RNSqlite2 (from `../node_modules/react-native-sqlite-2`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -330,6 +333,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
+  RNSqlite2:
+    :path: "../node_modules/react-native-sqlite-2"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -365,8 +370,9 @@ SPEC CHECKSUMS:
   RNAWSCognito: 5c0df55a382a2f23ae81ec6e717975880002dd63
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
+  RNSqlite2: 038cbebb953f80432db480c5ac5fd8ae427f8446
   Yoga: f2a7cd4280bfe2cca5a7aed98ba0eb3d1310f18b
 
-PODFILE CHECKSUM: 149852623f997478a14706b9aad2a9b0dfe720a8
+PODFILE CHECKSUM: 52c7c513087f0000dd7c405f6f2f544198df3a65
 
 COCOAPODS: 1.8.1

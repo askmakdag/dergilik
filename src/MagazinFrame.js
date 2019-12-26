@@ -12,12 +12,26 @@ const s3 = new AWS.S3({
     },
 });
 
+import SQLite from 'react-native-sqlite-2';
+
+const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
+
 class MagazinFrame extends Component {
     constructor(props) {
         super(props);
         this.state = {
             path: '',
         };
+
+        /*db.transaction((tx) => {
+            tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
+                for (let i = 0; i < results.rows.length; i++) {
+                    let row = results.rows.item(0);
+                    this.setState({getvalue: row.name});
+                    console.log('item:', results.rows.item(i));
+                }
+            });
+        });*/
     };
 
     static navigationOptions = {
@@ -49,16 +63,42 @@ class MagazinFrame extends Component {
             this.props.magazinName,
             'Dergiyi kaydetmek istediğinize emin misiniz?',
             [
-                {
-                    text: 'İptal',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                },
-                {text: 'Kaydet', onPress: () => console.log('OK Pressed')},
+                {text: 'İptal', style: 'cancel'},
+                {text: 'Kaydet', onPress: () => this.saveToDatabase()},
             ],
             {cancelable: false},
         );
     };
+
+    saveToDatabase = () => {
+
+        const params = {
+            Bucket: aws_credentials.s3Bucket,
+            Key: 'uploads/' + this.props.magazinName + '.pdf',
+        };
+
+        s3.getObject(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack);
+            } else {
+                console.log('data: ', data);
+                let magazin_base64 = btoa(unescape(encodeURIComponent(data.Body)));
+
+                db.transaction((tx) => {
+                    tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazins(user_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
+                    tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', ['askimX', 2019, magazin_base64]);
+                    tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
+                        for (let i = 0; i < results.rows.length; i++) {
+                            console.log('items:', results.rows.item(i));
+                        }
+                    });
+                });
+            }
+        });
+
+    };
+
 
     render() {
         const {path} = this.state;
