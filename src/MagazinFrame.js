@@ -72,12 +72,12 @@ class MagazinFrame extends Component {
                 console.log('data: ', data);
                 let magazin_base64 = btoa(unescape(encodeURIComponent(data.Body)));
                 db.transaction((tx) => {
-                    tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
+                    //tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
                     tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazins(magazinId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
                     tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', [magazinName, magazinYear, magazin_base64]);
                     tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
                         for (let i = 0; i < results.rows.length; i++) {
-                            console.log('items:', results.rows.item(i));
+                            console.log('item:', results.rows.item(i));
                         }
                     });
                 });

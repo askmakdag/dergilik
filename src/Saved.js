@@ -29,15 +29,13 @@ class Saved extends Component {
         await db.transaction((tx) => {
             tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
                     for (let i = 0; i < results.rows.length; i++) {
-                        magazinsArr.push({name: results.rows.item(0).name, year: results.rows.item(0).year});
+                        magazinsArr.push({name: results.rows.item(i).name, year: results.rows.item(i).year});
                     }
                     console.log('magazinsArr: ', magazinsArr);
                     this.setState({magazins: magazinsArr});
                 },
             );
         });
-
-        //
     }
 
     renderFooter = () => {
