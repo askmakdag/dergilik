@@ -3,9 +3,11 @@ import {
     StyleSheet,
     TextInput,
     View,
+    Text,
     Alert,
-    Dimensions, Button,
+    Dimensions,
 } from 'react-native';
+import {Button} from 'react-native-elements';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
 
@@ -43,13 +45,17 @@ class SignIn extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TextInput
-                    onChangeText={(value) => this.onChangeText('cell_phone', value)}
-                    style={styles.input}
-                    placeholder="Telefon numaranızı giriniz"
-                    placeholderTextColor={'#434241'}
-                />
 
+                <View>
+                    <Text style={styles.gsmTitleTextStyle}>Gsm Numaranız</Text>
+                    <TextInput
+                        onChangeText={(value) => this.onChangeText('cell_phone', value)}
+                        style={styles.input}
+                        placeholder="Telefon numaranızı giriniz"
+                        placeholderTextColor={'#434241'}
+                        keyboardType={'numeric'}
+                    />
+                </View>
                 <View style={styles.buttonsContainerStyle}>
                     <Button title={'Giriş Yap'} onPress={() => this.SignIn()}/>
 
@@ -69,19 +75,29 @@ const styles = StyleSheet.create({
     },
     input: {
         textAlign: 'center',
-        height: 40,
+        height: 45,
         color: '#000',
+        backgroundColor: '#F2F3F4',
         width: Dimensions.get('window').width * 0.96,
-        borderBottomWidth: 0.5,
-        borderWidth: 1,
-        borderBottomColor: '#474646',
-        margin: 10,
+        //borderBottomWidth: 0.5,
+        borderWidth: 1.5,
+        borderColor: '#D7DBDD',
+        //borderBottomColor: '#474646',
     },
     buttonsContainerStyle: {
         width: Dimensions.get('window').width * 0.6,
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
+    },
+    gsmTitleTextStyle: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#1a1a1a',
+        marginVertical: 10,
+    },
+    gsmContainer: {
+        flexDirection: 'column',
     },
 });
 

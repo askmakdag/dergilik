@@ -13,7 +13,7 @@ class MagazinFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazins: this.props.magazins[0],
+            magazins: this.props.magazins,
             magazinsX: [],
         };
     }
@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        magazins: state.magazinsStore.magazins,
+        magazins: state.magazinsStore.magazins[0],
     };
 };
 
