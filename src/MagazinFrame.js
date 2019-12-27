@@ -158,4 +158,4 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MagazinFrame);
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MagazinFrame));
