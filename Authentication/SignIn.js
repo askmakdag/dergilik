@@ -5,16 +5,17 @@ import {
     View,
     Text,
     Alert,
-    Dimensions,
-    Image, TouchableOpacity,
+    Dimensions, ScrollView, TouchableWithoutFeedback, Image, TouchableOpacity,
 } from 'react-native';
-import {Button, CheckBox,Icon} from 'react-native-elements';
+import {Button, CheckBox, Icon} from 'react-native-elements';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
+import Modal from 'react-native-modal';
 
 Amplify.configure(aws_exports);
 const backgroundColor = '#FBFCFC';
-import countries from '../assets/countries';
+import {countries} from '../assets/countries';
+import CountryLabelComponent from '../src/Components/CountryLabelComponent';
 
 class SignIn extends Component {
 
@@ -24,7 +25,9 @@ class SignIn extends Component {
             cell_phone: '',
             confirmation_code: '',
             checked: false,
-            country: {name: 'turkey', code: '+90', flag: require('../assets/counrty_flags/turkey.png')},
+            modalVisible: false,
+            country: countries[0],
+            countriesList: [],
         };
     };
 
@@ -36,8 +39,8 @@ class SignIn extends Component {
 
     SignIn = async () => {
         try {
-            const {cell_phone} = this.state;
-            const username = '+90' + cell_phone;
+            const {cell_phone, country} = this.state;
+            const username = country.code + cell_phone;
             const success = await Auth.signIn({username: username});
             console.log('user successfully signed in!: ', success);
             this.props.navigation.navigate('ConfirmSignIn', {AuthUser: success});
@@ -47,7 +50,26 @@ class SignIn extends Component {
         }
     };
 
+    handleVisibilityModal = (element) => {
+        console.log('element: ', element);
+
+        this.state.modalVisible ? this.setState({modalVisible: false, country: element}) :
+            this.setState({modalVisible: true, country: element});
+    };
+
+    componentWillMount() {
+        const {countriesList} = this.state;
+
+        countries.forEach((element) => {
+            countriesList.push(
+                <CountryLabelComponent country={element}
+                                       handleAction={() => this.handleVisibilityModal(element)}/>);
+        });
+    }
+
     render() {
+        const {country, modalVisible} = this.state;
+
         return (
             <View style={styles.container}>
 
@@ -61,16 +83,23 @@ class SignIn extends Component {
                         backgroundColor: '#DCDDDE',
                         marginVertical: 5,
                     }}>
-                        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
-                            <Image source={this.state.country.flag}
-                                   style={{height: 26, width: 26, marginHorizontal: 5}}/>
-                            <Text style={{fontSize: 13, marginRight: 5}}>{this.state.country.code}</Text>
+                        <TouchableOpacity style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                        }} onPress={() => this.setState({modalVisible: !modalVisible})}>
+                            <Image source={country.flag} style={{
+                                height: 26,
+                                width: 26,
+                                marginHorizontal: 5,
+                            }}/>
+                            <Text style={{fontSize: 13, marginRight: 5}}>{country.code}</Text>
                             <Icon
                                 name='sort-down'
                                 type='font-awesome'
                                 size={13}
-                                containerStyle={{marginBottom:5,marginRight:5}}
-                                color='#2A2A2A' />
+                                containerStyle={{marginBottom: 5, marginRight: 5}}
+                                color='#2A2A2A'/>
                         </TouchableOpacity>
 
                         <TextInput
@@ -97,6 +126,22 @@ class SignIn extends Component {
                     <Button title={'Kayıt Ol'} onPress={() => this.props.navigation.navigate('SignUp')}
                             buttonStyle={styles.signUpButtonStyle} titleStyle={styles.signUpButtonTittleStyle}/>
                 </View>
+                <TouchableWithoutFeedback onPress={() => this.setState({modalVisible: false})}>
+                    <Modal animationType="slide"
+                           transparent={true}
+                           visible={this.state.modalVisible}
+                           onSwipeComplete={() => this.setState({modalVisible: false})}
+                           onBackdropPress={() => this.setState({modalVisible: false})}
+                    >
+                        <View style={styles.modalView}>
+                            <ScrollView style={{width: '100%'}}>
+                                <View>
+                                    {this.state.countriesList}
+                                </View>
+                            </ScrollView>
+                        </View>
+                    </Modal>
+                </TouchableWithoutFeedback>
             </View>
         );
     }
@@ -164,9 +209,17 @@ const styles = StyleSheet.create({
         backgroundColor: backgroundColor,
         borderColor: backgroundColor,
     },
-    imageStyle: {
-        width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').width * 0.4,
+    modalView: {
+        backgroundColor: '#889e78',
+        width: Dimensions.get('window').width * 0.96,
+        height: Dimensions.get('window').height * 0.6,
+        alignSelf: 'center',
+        position: 'absolute',
+        bottom: '15%',
+        borderRadius: 4,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
 });
 
