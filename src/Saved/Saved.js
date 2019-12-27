@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {View, Button, StyleSheet, FlatList, Dimensions} from 'react-native';
-import MagazinFrame from './MagazinFrame';
+import MagazinFrame from '../MagazinFrame';
 import {withNavigation} from 'react-navigation';
-import SignIn from '../Authentication/SignIn';
+import SignIn from '../../Authentication/SignIn';
 import {Auth} from 'aws-amplify';
-
 import SQLite from 'react-native-sqlite-2';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
@@ -18,13 +17,16 @@ class Saved extends Component {
         };
     }
 
+    static navigationOptions = {
+        title: 'SAVED',
+    };
+
     SignOut = async () => {
         await Auth.signOut();
         this.props.navigation.navigate('SignIn');
     };
 
     async componentWillMount() {
-        console.log('results.rows: componentWillMount');
         let magazinsArr = [];
         await db.transaction((tx) => {
             tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
@@ -40,14 +42,10 @@ class Saved extends Component {
 
     renderFooter = () => {
         return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 15}}>
                 <Button title={'Çıkış Yap'} onPress={() => this.SignOut()}/>
             </View>
         );
-    };
-
-    renderHeader = () => {
-        return (<View style={{height: 40}}/>);
     };
 
     render() {
@@ -58,12 +56,11 @@ class Saved extends Component {
                 <FlatList
                     data={magazins}
                     renderItem={({item}) => (
-                        <MagazinFrame magazinName={item.name} magazinYear={item.year}/>
+                        <MagazinFrame magazinName={item.name} magazinYear={item.year} from={'SAVED_PAGE'}/>
                     )}
                     keyExtractor={item => item.magazinId}
                     refreshing={this.state.refreshing}
                     showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={this.renderHeader}
                     ListFooterComponent={this.renderFooter}
                     contentContainerStyle={{flexGrow: 1}}
                     style={{flex: 1}}

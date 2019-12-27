@@ -27,13 +27,23 @@ class MagazinComponent extends Component {
     };
 
     componentWillMount() {
-        db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
-                let row = results.rows.item(0);
-                console.log('row: ', row);
-                this.setState({magazin_base64: row.magazin_base64});
+        const {from, name} = this.props.navigation.state.params;
+        let magazin_base64 = '';
+
+        if (from === 'SAVED_PAGE') {
+            db.transaction((tx) => {
+                tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
+                        for (let i = 0; i < results.rows.length; i++) {
+                            if (results.rows.item(i).name === name) {
+                                magazin_base64 = results.rows.item(i).magazin_base64;
+                            }
+                        }
+                        //console.log('magazin_base64: ', magazin_base64);
+                        this.setState({magazin_base64: magazin_base64});
+                    },
+                );
             });
-        });
+        }
     }
 
     getUrl() {
@@ -41,9 +51,8 @@ class MagazinComponent extends Component {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + '.pdf',
         };
-        const url = s3.getSignedUrl('getObject', params);
-        console.log('generated url: ', url);
-        return url;
+
+        return s3.getSignedUrl('getObject', params);
     }
 
     render() {
@@ -52,12 +61,11 @@ class MagazinComponent extends Component {
             uri: this.getUrl(),
             cache: true,
         };
-
-        //const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64, cache: true};
-        //console.log('src: ', 'data:application/pdf;base64,' + this.state.magazin_base64);
+        const from = this.props.navigation.state.params.from;
+        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64, cache: true};
 
         return <Pdf
-            source={source}
+            source={from === 'HOME_PAGE' ? source : src}
             style={styles.pdf}
         />;
     }

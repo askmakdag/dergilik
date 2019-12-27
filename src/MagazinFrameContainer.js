@@ -42,7 +42,6 @@ class MagazinFrameContainer extends Component {
             /** Aranan bulunur ise arananı listele.*/
             this.setState({magazins: result});
         }
-        //console.log('result: ', result);
     }
 
     sortBy = (type) => {
@@ -122,7 +121,7 @@ class MagazinFrameContainer extends Component {
             <FlatList
                 data={magazins}
                 renderItem={({item}) => (
-                    <MagazinFrame magazinName={item.name} magazinYear={item.year}/>
+                    <MagazinFrame magazinName={item.name} magazinYear={item.year} from={'HOME_PAGE'}/>
                 )}
                 keyExtractor={item => item.magazinId}
                 refreshing={this.state.refreshing}

@@ -36,7 +36,7 @@ class MagazinFrame extends Component {
     }
 
     navigateToMagazin = () => {
-        this.props.navigation.navigate('MagazinComponent', {name: this.props.magazinName});
+        this.props.navigation.navigate('MagazinComponent', {name: this.props.magazinName, from: this.props.from});
     };
 
     componentWillMount = async () => {

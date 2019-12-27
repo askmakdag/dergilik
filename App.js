@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import React from 'react';
 
 // goes here.
-import HomeScreen from './src/HomeScreen';
+import HomeScreen from './src/Home/HomeScreen';
 import SignIn from './Authentication/SignIn';
 import SignUp from './Authentication/SignUp';
 import AuthLoadingScreen from './AuthLoadingScreen';
@@ -12,7 +12,7 @@ import ConfirmSignIn from './Authentication/ConfirmSignIn';
 import MagazinFrameContainer from './src/MagazinFrameContainer';
 import MagazinFrame from './src/MagazinFrame';
 import MagazinComponent from './src/MagazinComponent';
-import DetailsScreen from './src/Saved';
+import Saved from './src/Saved/Saved';
 
 const AppStack = createStackNavigator({
     Home: HomeScreen,
@@ -21,6 +21,8 @@ const AppStack = createStackNavigator({
     MagazinComponent: MagazinComponent,
 });
 const AuthStack = createStackNavigator({SignIn: SignIn, SignUp: SignUp, ConfirmSignIn: ConfirmSignIn});
+const SavedStack = createStackNavigator({Saved: Saved});
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainTabs = createBottomTabNavigator({
@@ -34,7 +36,7 @@ const MainTabs = createBottomTabNavigator({
         },
     },
     Search: {
-        screen: DetailsScreen,
+        screen: SavedStack,
         navigationOptions: {
             tabBarLabel: 'Saved',
             tabBarIcon: () => (
