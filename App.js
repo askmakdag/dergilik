@@ -26,26 +26,44 @@ const SavedStack = createStackNavigator({Saved: Saved});
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const MainTabs = createBottomTabNavigator({
-    Feed: {
+    Home: {
         screen: AppStack,
         navigationOptions: {
-            tabBarLabel: 'Home',
+            tabBarLabel: 'HOME PAGE',
             tabBarIcon: () => (
                 <Icon name="home" size={30} color="#0A7CA9"/>
             ),
         },
     },
-    Search: {
+    Magazines: {
         screen: SavedStack,
         navigationOptions: {
-            tabBarLabel: 'Saved',
+            tabBarLabel: 'MAGAZINES',
+            tabBarIcon: () => (
+                <Icon name="book" size={30} color="#0A7CA9"/>
+            ),
+        },
+    },
+    NewsPapers: {
+        screen: AppStack,
+        navigationOptions: {
+            tabBarLabel: 'NEWSPAPERS',
+            tabBarIcon: () => (
+                <Icon name="newspaper" size={30} color="#0A7CA9"/>
+            ),
+        },
+    },
+    Saved: {
+        screen: SavedStack,
+        navigationOptions: {
+            tabBarLabel: 'SAVED',
             tabBarIcon: () => (
                 <Icon name="download" size={30} color="#0A7CA9"/>
             ),
         },
-    },
+    }
 }, {
-    tabBarOptions: {showLabel: false},
+    tabBarOptions: {showLabel: true},
 });
 
 export default createAppContainer(
