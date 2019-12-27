@@ -26,7 +26,7 @@ class SignIn extends Component {
             confirmation_code: '',
             checked: false,
             modalVisible: false,
-            country: countries[0],
+            country: countries[16],
             countriesList: [],
         };
     };
@@ -105,7 +105,7 @@ class SignIn extends Component {
                         <TextInput
                             onChangeText={(value) => this.onChangeText('cell_phone', value)}
                             style={styles.input}
-                            placeholder="Telefon numaranızı giriniz"
+                            placeholder="Gsm numaranızı giriniz"
                             placeholderTextColor={'#434241'}
                             keyboardType={'numeric'}
                         />
@@ -210,16 +210,19 @@ const styles = StyleSheet.create({
         borderColor: backgroundColor,
     },
     modalView: {
-        backgroundColor: '#889e78',
+        backgroundColor: backgroundColor,
         width: Dimensions.get('window').width * 0.96,
-        height: Dimensions.get('window').height * 0.6,
+        height: Dimensions.get('window').height * 0.7,
         alignSelf: 'center',
         position: 'absolute',
         bottom: '15%',
+        borderWidth: 1,
         borderRadius: 4,
+        borderColor: '#1f2020',
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        paddingTop: 20,
     },
 });
 

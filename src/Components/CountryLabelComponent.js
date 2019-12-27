@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {Icon} from 'react-native-elements';
 
 class CountryLabelComponent extends Component {
 
@@ -10,13 +9,8 @@ class CountryLabelComponent extends Component {
         return (
             <TouchableOpacity style={styles.containerStyle} onPress={(item) => handleAction(item)}>
                 <Image source={country.flag} style={styles.imageStyle}/>
-                <Text style={{fontSize: 13, marginRight: 5}}>{country.code}</Text>
-                <Icon
-                    name='sort-down'
-                    type='font-awesome'
-                    size={13}
-                    containerStyle={{marginBottom: 5, marginRight: 5}}
-                    color='#2A2A2A'/>
+                <Text style={{fontSize: 15}}>{country.name}</Text>
+                <Text style={{marginLeft: 15, fontSize: 12, color: '#292929'}}>{country.code} </Text>
             </TouchableOpacity>
         );
     }
@@ -27,11 +21,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        marginVertical: 5,
     },
     imageStyle: {
-        height: 26,
-        width: 26,
-        marginHorizontal: 5,
+        height: 32,
+        width: 32,
+        marginHorizontal: 15,
     },
 });
 
