@@ -52,20 +52,18 @@ class MagazinComponent extends Component {
             Key: 'uploads/' + this.props.navigation.state.params.name + '.pdf',
         };
 
-        return s3.getSignedUrl('getObject', params);
+        return {
+            uri: s3.getSignedUrl('getObject', params),
+            cache: true,
+        };
     }
 
     render() {
-        /** ios tarafında çalışıyor ancak android ile çalışmadı.*/
-        const source = {
-            uri: this.getUrl(),
-            cache: true,
-        };
         const from = this.props.navigation.state.params.from;
-        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
+        const source = from === 'HOME_PAGE' ? this.getUrl() : {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
 
         return <Pdf
-            source={from === 'HOME_PAGE' ? source : src}
+            source={source}
             style={styles.pdf}
         />;
     }

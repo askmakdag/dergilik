@@ -4,6 +4,7 @@ import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import aws_credentials from '../aws_credentials';
 import RNFetchBlob from 'rn-fetch-blob';
+import {connect} from 'react-redux';
 
 const s3 = new AWS.S3({
     region: aws_credentials.region,
@@ -14,7 +15,6 @@ const s3 = new AWS.S3({
 });
 
 import SQLite from 'react-native-sqlite-2';
-
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
 class MagazinFrame extends Component {
@@ -55,7 +55,7 @@ class MagazinFrame extends Component {
             {cancelable: false},
         );
     };
-    
+
     saveToDatabase = () => {
         const params = {
             Bucket: aws_credentials.s3Bucket,
@@ -72,7 +72,6 @@ class MagazinFrame extends Component {
                 if (status === 200) {
                     // the conversion is done in native code
                     let magazin_base64 = res.base64();
-                    console.log('magazin_base64: ', magazin_base64);
 
                     const magazinName = this.props.magazinName;
                     const magazinYear = this.props.magazinYear;
@@ -148,4 +147,15 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(MagazinFrame);
+
+const mapStateToProps = state => {
+    return {
+        magazins: state.magazinsStore.magazins,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MagazinFrame);

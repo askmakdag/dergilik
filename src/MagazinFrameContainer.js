@@ -3,6 +3,8 @@ import {View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList, TextIn
 import MagazinFrame from './MagazinFrame';
 import {withNavigation} from 'react-navigation';
 import axios from 'axios';
+import {add_magazin} from './Store/Actions/index';
+import {connect} from 'react-redux';
 
 class MagazinFrameContainer extends Component {
 
@@ -11,7 +13,7 @@ class MagazinFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazins: [],
+            magazins: this.props.magazins[0],
             magazinsX: [],
         };
     }
@@ -20,12 +22,14 @@ class MagazinFrameContainer extends Component {
         axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
                     console.log('Get API Response: ', response);
-                    this.setState({magazins: response.data.Items, magazinsX: response.data.Items});
+                    //this.setState({magazins: response.data.Items, magazinsX: response.data.Items});
+                    this.props.add_magazin(response.data.Items);
                 },
             )
             .catch(function (error) {
                 console.log('Get API Hatası: ', error);
             });
+
     }
 
     onChangeText(key, value) {
@@ -208,4 +212,17 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(MagazinFrameContainer);
+const mapStateToProps = state => {
+    return {
+        magazins: state.magazinsStore.magazins,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        add_magazin: (magazin) => dispatch(add_magazin(magazin)),
+
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MagazinFrameContainer);
