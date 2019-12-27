@@ -75,7 +75,6 @@ class MagazinFrameContainer extends Component {
                     <TextInput
                         style={styles.searchBoxStyle}
                         placeholderTextColor={'#8E9494'}
-                        color={"#000"}
                         placeholder={'Dergi Ara'}
                         onChangeText={value => this.onChangeText('search_text', value)}
                         multiline={false}
@@ -153,6 +152,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: '#DFECEB',
         fontWeight: '500',
+        color: '#000',
     },
     placeHolderStyle: {
         width: '95%',

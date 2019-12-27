@@ -28,17 +28,22 @@ const MainTabs = createBottomTabNavigator({
         screen: AppStack,
         navigationOptions: {
             tabBarLabel: 'Home',
-            tabBarIcon: ({tintColor}) => (
-                <Icon name="home" size={30} color="#900"/>
+            tabBarIcon: () => (
+                <Icon name="home" size={30} color="#0A7CA9"/>
             ),
         },
     },
     Search: {
         screen: DetailsScreen,
         navigationOptions: {
-            tabBarLabel: 'Detail',
+            tabBarLabel: 'Saved',
+            tabBarIcon: () => (
+                <Icon name="download" size={30} color="#0A7CA9"/>
+            ),
         },
     },
+}, {
+    tabBarOptions: {showLabel: false},
 });
 
 export default createAppContainer(
