@@ -62,7 +62,7 @@ class MagazinComponent extends Component {
             cache: true,
         };
         const from = this.props.navigation.state.params.from;
-        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64, cache: true};
+        const src = {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
 
         return <Pdf
             source={from === 'HOME_PAGE' ? source : src}
