@@ -12,7 +12,7 @@ import ConfirmSignIn from './Authentication/ConfirmSignIn';
 import MagazinFrameContainer from './src/MagazinFrameContainer';
 import MagazinFrame from './src/MagazinFrame';
 import MagazinComponent from './src/MagazinComponent';
-import DetailsScreen from './DetailsScreen';
+import DetailsScreen from './src/Saved';
 
 const AppStack = createStackNavigator({
     Home: HomeScreen,

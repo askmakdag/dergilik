@@ -16,7 +16,7 @@ class MagazinFrameContainer extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
                     console.log('Get API Response: ', response);
@@ -122,7 +122,7 @@ class MagazinFrameContainer extends Component {
             <FlatList
                 data={magazins}
                 renderItem={({item}) => (
-                    <MagazinFrame magazinId={item.magazinId} magazinName={item.name} year={item.year}/>
+                    <MagazinFrame magazinName={item.name} magazinYear={item.year}/>
                 )}
                 keyExtractor={item => item.magazinId}
                 refreshing={this.state.refreshing}

@@ -22,20 +22,6 @@ class MagazinFrame extends Component {
         this.state = {
             path: '',
         };
-
-        /*db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
-                for (let i = 0; i < results.rows.length; i++) {
-                    let row = results.rows.item(0);
-                    this.setState({getvalue: row.name});
-                    console.log('item:', results.rows.item(i));
-                }
-            });
-        });*/
-    };
-
-    static navigationOptions = {
-        title: 'Dergiler',
     };
 
     getUrl() {
@@ -71,11 +57,13 @@ class MagazinFrame extends Component {
     };
 
     saveToDatabase = () => {
-
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.magazinName + '.pdf',
         };
+
+        const magazinName = this.props.magazinName;
+        const magazinYear = this.props.magazinYear;
 
         s3.getObject(params, function (err, data) {
             if (err) {
@@ -83,11 +71,10 @@ class MagazinFrame extends Component {
             } else {
                 console.log('data: ', data);
                 let magazin_base64 = btoa(unescape(encodeURIComponent(data.Body)));
-
                 db.transaction((tx) => {
                     tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
                     tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazins(magazinId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
-                    tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', ['askimX', 2019, magazin_base64]);
+                    tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', [magazinName, magazinYear, magazin_base64]);
                     tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
                         for (let i = 0; i < results.rows.length; i++) {
                             console.log('items:', results.rows.item(i));
@@ -98,7 +85,6 @@ class MagazinFrame extends Component {
         });
 
     };
-
 
     render() {
         const {path} = this.state;
@@ -112,7 +98,7 @@ class MagazinFrame extends Component {
                 />
                 <View style={styles.magazinInfoContainerStyle}>
                     <Text style={styles.magazinInfoTextStyle}> {this.props.magazinName} </Text>
-                    <Text style={styles.magazinInfoTextStyle}> {this.props.year} </Text>
+                    <Text style={styles.magazinInfoTextStyle}> {this.props.magazinYear} </Text>
 
                 </View>
             </TouchableOpacity>
