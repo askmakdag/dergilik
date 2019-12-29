@@ -3,7 +3,7 @@ import {
     StyleSheet,
     TextInput,
     View, Alert,
-    Dimensions,
+    Dimensions, Text,
 } from 'react-native';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
@@ -49,6 +49,7 @@ class ConfirmSignIn extends Component {
     ConfirmSignIn = async () => {
         const {confirmation_code} = this.state;
         const AuthUser = this.props.navigation.state.params.AuthUser;
+        console.log('confirm');
 
         try {
             const confirmation = confirmation_code.toString();
@@ -71,6 +72,8 @@ class ConfirmSignIn extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.textStyle}>Girişinizi tamamlayın</Text>
+
                 <TextInput
                     onChangeText={(value) => this.onChangeText('confirmation_code', value)}
                     style={styles.input}
@@ -80,7 +83,6 @@ class ConfirmSignIn extends Component {
                 />
 
                 <Button title={'Bitir'} onPress={() => this.ConfirmSignIn()} buttonStyle={styles.buttonStyle}/>
-
             </View>
         );
     }
@@ -91,8 +93,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginBottom: '10%',
+        marginHorizontal: Dimensions.get('window').width * 0.02,
     },
     input: {
         textAlign: 'left',
@@ -111,7 +114,14 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 25,
         backgroundColor: '#0497EC',
-        marginVertical: 15,
+        marginVertical: 20,
+    },
+    textStyle: {
+        fontSize: 16,
+        fontWeight: '500',
+        marginVertical: 10,
+        marginHorizontal: 4,
+        color: '#1a1a1a',
     },
 });
 

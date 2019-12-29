@@ -47,15 +47,16 @@ class SignUp extends Component {
             try {
                 const username = country.code + cell_phone;
                 const {full_name} = this.state;
-                const success = await Auth.signUp({
+                await Auth.signUp({
                     username: username,
                     password: '3424234242sdfsfs234238uds239487dfsfsf',
                     attributes: {
                         name: full_name,
                     },
                 });
+                const success = await Auth.signIn({username: username});
                 console.log('user successfully signed up!: ', success);
-                this.props.navigation.navigate('ConfirmSignIn');
+                this.props.navigation.navigate('ConfirmSignIn', {AuthUser: success});
             } catch (err) {
                 console.log('error signing up: ', err);
                 Alert.alert(err.message());
