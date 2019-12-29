@@ -3,10 +3,11 @@ import {
     StyleSheet,
     TextInput,
     View, Alert,
-    Dimensions, Button,
+    Dimensions,
 } from 'react-native';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
+import {Button} from 'react-native-elements';
 
 Amplify.configure(aws_exports);
 
@@ -73,11 +74,12 @@ class ConfirmSignIn extends Component {
                 <TextInput
                     onChangeText={(value) => this.onChangeText('confirmation_code', value)}
                     style={styles.input}
+                    keyboardType={'numeric'}
                     placeholder="Tek kullanımlık kodunuzu giriniz"
                     placeholderTextColor={'#434241'}
                 />
 
-                <Button title={'DEVAM ET'} onPress={() => this.ConfirmSignIn()}/>
+                <Button title={'Bitir'} onPress={() => this.ConfirmSignIn()} buttonStyle={styles.buttonStyle}/>
 
             </View>
         );
@@ -90,32 +92,26 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '10%',
     },
     input: {
-        textAlign: 'center',
-        height: 40,
+        textAlign: 'left',
+        padding: 5,
+        height: 50,
+        fontSize: 15,
+        fontWeight: '500',
         color: '#000',
+        backgroundColor: '#F2F3F4',
         width: Dimensions.get('window').width * 0.96,
-        borderBottomWidth: 0.5,
-        borderWidth: 1,
-        borderBottomColor: '#474646',
-        margin: 10,
+        borderWidth: 1.5,
+        borderColor: '#D7DBDD',
     },
-    buttonsContainerStyle: {
+    buttonStyle: {
         width: Dimensions.get('window').width * 0.96,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    buttonSignUpContainer: {
-        marginBottom: 40,
-        marginTop: 10,
-        marginHorizontal: 10,
-    },
-    signUpTextStyle: {
-        color: '#F59432',
-        fontWeight: '600',
-        fontSize: 18,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#0497EC',
+        marginVertical: 15,
     },
 });
 
