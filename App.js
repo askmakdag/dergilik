@@ -13,6 +13,7 @@ import MagazinFrameContainer from './src/MagazinFrameContainer';
 import MagazinFrame from './src/MagazinFrame';
 import MagazinComponent from './src/MagazinComponent';
 import Saved from './src/Saved/Saved';
+import PrivacyPolicy from './Authentication/PrivacyPolicy';
 
 const AppStack = createStackNavigator({
     Home: HomeScreen,
@@ -20,7 +21,12 @@ const AppStack = createStackNavigator({
     MagazinFrame: MagazinFrame,
     MagazinComponent: MagazinComponent,
 });
-const AuthStack = createStackNavigator({SignIn: SignIn, SignUp: SignUp, ConfirmSignIn: ConfirmSignIn});
+const AuthStack = createStackNavigator({
+    SignIn: SignIn,
+    SignUp: SignUp,
+    ConfirmSignIn: ConfirmSignIn,
+    PrivacyPolicy: PrivacyPolicy,
+});
 const SavedStack = createStackNavigator({Saved: Saved});
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -61,7 +67,7 @@ const MainTabs = createBottomTabNavigator({
                 <Icon name="download" size={30} color="#0A7CA9"/>
             ),
         },
-    }
+    },
 }, {
     tabBarOptions: {showLabel: true},
 });
