@@ -6,8 +6,7 @@ class PrivacyPolicy extends Component {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <Text style={styles.textStyle2}>KİŞİSEL VERİLERİNİZİN KORUNMASINA İLİŞKİN BİLGİLENDİRME
-                    </Text>
+                    <Text style={styles.textStyle2}>KİŞİSEL VERİLERİNİZİN KORUNMASI</Text>
 
                     <Text style={styles.textStyle}>
                         Turkcell İletişim Hizmetleri A.Ş. ve grup şirketleri* (hep birlikte “Turkcell” olarak
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         marginVertical: 25,
         marginHorizontal: 10,
     },
