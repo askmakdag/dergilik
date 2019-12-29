@@ -1,21 +1,22 @@
 import React, {Component} from 'react';
 import {
-    StyleSheet,
-    TextInput,
-    View,
-    Text,
-    Alert,
-    Dimensions, ScrollView, TouchableWithoutFeedback, Image, TouchableOpacity,
+    StyleSheet, TextInput, View,
+    Text, Alert, Dimensions,
+    ScrollView, TouchableWithoutFeedback,
+    Image, TouchableOpacity,
 } from 'react-native';
 import {Button, CheckBox, Icon} from 'react-native-elements';
 import Amplify, {Auth} from 'aws-amplify';
 import aws_exports from '../aws-exports.js';
 import Modal from 'react-native-modal';
-
-Amplify.configure(aws_exports);
-const backgroundColor = '#FBFCFC';
 import {countries} from '../assets/countries';
 import CountryLabelComponent from '../src/Components/CountryLabelComponent';
+import SQLite from 'react-native-sqlite-2';
+
+Amplify.configure(aws_exports);
+const db2 = SQLite.openDatabase({name: 'dataA2.db', location: 'default'});
+
+const backgroundColor = '#FBFCFC';
 
 class SignIn extends Component {
 
@@ -26,7 +27,7 @@ class SignIn extends Component {
             confirmation_code: '',
             checked: false,
             modalVisible: false,
-            country: countries[16],
+            country: countries[15],
             countriesList: [],
         };
     };
@@ -39,11 +40,26 @@ class SignIn extends Component {
 
     SignIn = async () => {
         try {
-            const {cell_phone, country} = this.state;
+            const {cell_phone, country, checked} = this.state;
             const username = country.code + cell_phone;
             const success = await Auth.signIn({username: username});
             console.log('user successfully signed in!: ', success);
             this.props.navigation.navigate('ConfirmSignIn', {AuthUser: success});
+
+            if (checked) {
+                console.log('checked');
+                db2.transaction((tx) => {
+                    tx.executeSql('DROP TABLE IF EXISTS user', []);
+                    tx.executeSql('CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY NOT NULL, number VARCHAR(30))', []);
+                    tx.executeSql('INSERT INTO user (number) VALUES (:number)', [cell_phone]);
+                });
+            } else {
+                console.log('unchecked');
+                db2.transaction((tx) => {
+                    tx.executeSql('DROP TABLE IF EXISTS user', []);
+                });
+            }
+
         } catch (err) {
             console.log('error signing up: ', err);
             Alert.alert('Kullanıcı bulunamadı!');
@@ -65,7 +81,21 @@ class SignIn extends Component {
                 <CountryLabelComponent country={element}
                                        handleAction={() => this.handleVisibilityModal(element)}/>);
         });
+
+        console.log('before select...');
+        /** Kullanıcının numarası kayıtlı ise hatırla.*/
+        db2.transaction((tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY NOT NULL, number VARCHAR(30))', []);
+            tx.executeSql('SELECT * FROM user', [], (tx, results) => {
+                console.log('select...');
+                console.log('item:', results.rows.item(0));
+                if (results.rows.item(0)) {
+                    this.setState({cell_phone: results.rows.item(0).number});
+                }
+            });
+        });
     }
+
 
     render() {
         const {country, modalVisible} = this.state;
@@ -108,6 +138,7 @@ class SignIn extends Component {
                             placeholder="Gsm numaranızı giriniz"
                             placeholderTextColor={'#434241'}
                             keyboardType={'numeric'}
+                            defaultValue={this.state.cell_phone}
                         />
                     </View>
                 </View>

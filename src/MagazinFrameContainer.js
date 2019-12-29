@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList, TextInput, Dimensions} from 'react-native';
 import MagazinFrame from './MagazinFrame';
-import {withNavigation} from 'react-navigation';
 import axios from 'axios';
 import {add_magazin} from './Store/Actions/index';
 import {connect} from 'react-redux';
