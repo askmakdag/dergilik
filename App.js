@@ -16,10 +16,30 @@ import Saved from './src/Saved/Saved';
 import PrivacyPolicy from './Authentication/PrivacyPolicy';
 
 const AppStack = createStackNavigator({
-    Home: HomeScreen,
-    MagazinFrameContainer: MagazinFrameContainer,
-    MagazinFrame: MagazinFrame,
-    MagazinComponent: MagazinComponent,
+    Home: {
+        screen: HomeScreen,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+    MagazinFrameContainer: {
+        screen: MagazinFrameContainer,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+    MagazinFrame: {
+        screen: MagazinFrame,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+    MagazinComponent: {
+        screen: MagazinComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
 });
 const AuthStack = createStackNavigator({
     SignIn: {

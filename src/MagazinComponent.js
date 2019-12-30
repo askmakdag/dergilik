@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, View, Platform, ActivityIndicator} from 'react-native';
+import {StyleSheet, Dimensions, View, Platform, Text} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
@@ -58,7 +58,16 @@ class MagazinComponent extends Component {
     };
 
     asd = () => {
-        return <Spinner/>;
+        const types = ['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce',
+            'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt'];
+
+        return <View style={styles.spinnerContainerStyle}>
+            <Spinner style={styles.spinnerStyle} isVisible={true} size={100} type={types[3]}
+                     color={'#123345'}/>
+            <Text style={styles.loadingTextStyle}>İçerik yükleniyor</Text>
+        </View>;
+
+
     };
 
     render() {
@@ -71,7 +80,6 @@ class MagazinComponent extends Component {
                 source={this.state.magazin_path}
                 style={styles.pdfStyle}
                 activityIndicator={this.asd()}
-                activityIndicatorProps={{color: '#734456', progressTintColor: '#567567'}}
             />
         </View>;
     }
@@ -90,9 +98,23 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
-    lottie: {
-        width: 100,
-        height: 100,
+    spinnerStyle: {
+        marginVertical: 25,
+    },
+    spinnerContainerStyle: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+        backgroundColor: '#dcddde',
+    },
+    loadingTextStyle: {
+        fontSize: 20,
+        fontWeight: '400',
+        marginVertical: 40,
+        color: '#292929',
     },
 });
 
