@@ -41,6 +41,7 @@ const AppStack = createStackNavigator({
         },
     },
 });
+
 const AuthStack = createStackNavigator({
     SignIn: {
         screen: SignIn,

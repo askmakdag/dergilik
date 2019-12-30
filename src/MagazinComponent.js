@@ -61,13 +61,13 @@ class MagazinComponent extends Component {
         const types = ['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce',
             'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt'];
 
+        const num = Math.ceil(Math.random() * 13);
+
         return <View style={styles.spinnerContainerStyle}>
-            <Spinner style={styles.spinnerStyle} isVisible={true} size={100} type={types[3]}
-                     color={'#123345'}/>
-            <Text style={styles.loadingTextStyle}>İçerik yükleniyor</Text>
+            <Spinner style={styles.spinnerStyle} isVisible={true} size={100} type={types[num]}
+                     color={'#3498DB'}/>
+            <Text style={styles.loadingTextStyle}>Yükleniyor</Text>
         </View>;
-
-
     };
 
     render() {
@@ -108,13 +108,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        backgroundColor: '#dcddde',
+        backgroundColor: '#fff',
     },
     loadingTextStyle: {
-        fontSize: 20,
-        fontWeight: '400',
+        fontSize: 24,
+        fontWeight: '500',
         marginVertical: 40,
-        color: '#292929',
+        color: '#AEB6BF',
+        fontFamily: 'HelveticaNeue-MediumItalic'
     },
 });
 
