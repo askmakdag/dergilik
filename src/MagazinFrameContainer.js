@@ -12,7 +12,6 @@ class MagazinFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazins: this.props.magazins[0],
             magazinsX: [],
         };
     }
@@ -40,10 +39,10 @@ class MagazinFrameContainer extends Component {
         const result = json.filter(word => word.name.indexOf(value) >= 0);
         if (result.length === 0) {
             /** Aranan bulunamaz ise hepsini listele.*/
-            this.setState({magazins: this.state.magazinsX});
+            //this.setState({magazins: this.state.magazinsX});
         } else {
             /** Aranan bulunur ise arananı listele.*/
-            this.setState({magazins: result});
+            //this.setState({magazins: result});
         }
     }
 
@@ -118,7 +117,7 @@ class MagazinFrameContainer extends Component {
     };
 
     render() {
-        const {magazins} = this.state;
+        const {magazins} = this.props;
 
         return (
             <FlatList
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        magazins: state.magazinsStore.magazins,
+        magazins: state.magazinsStore.magazins[0],
     };
 };
 

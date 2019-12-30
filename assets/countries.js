@@ -17,5 +17,4 @@ export const countries = [
     {name: 'Turkey', code: '+90', flag: require('../assets/counrty_flags/turkey.png')},
     {name: 'United Kingdom', code: '+44', flag: require('../assets/counrty_flags/united-kingdom.png')},
     {name: 'United States', code: '+1', flag: require('../assets/counrty_flags/usa.png')},
-
 ];

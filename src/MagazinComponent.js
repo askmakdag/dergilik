@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, View} from 'react-native';
+import {StyleSheet, Dimensions, View, Platform, ActivityIndicator} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
@@ -14,61 +14,64 @@ const s3 = new AWS.S3({
 });
 
 import SQLite from 'react-native-sqlite-2';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
+let Spinner = require('react-native-spinkit');
 
 class MagazinComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            magazin_base64: '',
+            magazin_path: {},
         };
     };
 
     componentWillMount() {
-        const {from, name} = this.props.navigation.state.params;
-        let magazin_base64 = '';
-
-        if (from === 'SAVED_PAGE') {
-            db.transaction((tx) => {
-                tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
-                        for (let i = 0; i < results.rows.length; i++) {
-                            if (results.rows.item(i).name === name) {
-                                magazin_base64 = results.rows.item(i).magazin_base64;
-                            }
-                        }
-                        //console.log('magazin_base64: ', magazin_base64);
-                        this.setState({magazin_base64: magazin_base64});
-                    },
-                );
-            });
-        }
+        this.fetchPdf();
     }
 
-    getUrl() {
+    fetchPdf = () => {
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + '.pdf',
         };
+        const url = s3.getSignedUrl('getObject', params);
 
-        return {
-            uri: s3.getSignedUrl('getObject', params),
-            cache: true,
-        };
-    }
+        RNFetchBlob
+            .config({
+                // add this option that makes response data to be stored as a file,
+                // this is much more performant.
+                fileCache: true,
+                appendExt: 'pdf',
+                mediaScannable: false,
+            })
+            .fetch('GET', url, {
+                //some headers ..
+            })
+            .then((res) => {
+                // the temp file path
+                console.log('The file saved to ', res.path());
+                this.setState({magazin_path: {uri: Platform.OS === 'android' ? 'file://' + res.path() : '' + res.path()}});
+            });
+    };
+
+    asd = () => {
+        return <Spinner/>;
+    };
 
     render() {
-        const from = this.props.navigation.state.params.from;
-        const source = from === 'HOME_PAGE' ? this.getUrl() : {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
-
+        console.log('path:: ', this.state.magazin_path);
         return <View style={styles.pdfContainerStyle}>
             <Pdf
                 horizontal={true}
-                fitWidth={true}
+                fitPolicy={2}
                 enablePaging={true}
-                source={source}
+                source={this.state.magazin_path}
                 style={styles.pdfStyle}
+                activityIndicator={this.asd()}
+                activityIndicatorProps={{color: '#734456', progressTintColor: '#567567'}}
             />
         </View>;
     }
@@ -76,7 +79,7 @@ class MagazinComponent extends Component {
 
 const styles = StyleSheet.create({
     pdfStyle: {
-        flex:1,
+        flex: 1,
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         justifyContent: 'center',
@@ -86,6 +89,10 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
+    },
+    lottie: {
+        width: 100,
+        height: 100,
     },
 });
 
