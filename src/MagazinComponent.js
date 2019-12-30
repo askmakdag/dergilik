@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, View} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
@@ -62,19 +62,30 @@ class MagazinComponent extends Component {
         const from = this.props.navigation.state.params.from;
         const source = from === 'HOME_PAGE' ? this.getUrl() : {uri: 'data:application/pdf;base64,' + this.state.magazin_base64};
 
-        return <Pdf
-            source={source}
-            style={styles.pdf}
-        />;
+        return <View style={styles.pdfContainerStyle}>
+            <Pdf
+                horizontal={true}
+                fitWidth={true}
+                enablePaging={true}
+                source={source}
+                style={styles.pdfStyle}
+            />
+        </View>;
     }
 }
 
 const styles = StyleSheet.create({
-    pdf: {
+    pdfStyle: {
+        flex:1,
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    pdfContainerStyle: {
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
     },
 });
 
