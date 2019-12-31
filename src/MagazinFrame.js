@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         justifyContent: 'center',
-        height: Dimensions.get('window').width * 0.87,
+        height: Dimensions.get('window').width * 0.88,
         width: Dimensions.get('window').width * 0.47,
         backgroundColor: '#fff',
         marginVertical: 10,

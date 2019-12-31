@@ -28,7 +28,7 @@ class MagazinFrameContainer extends Component {
                     if (this.props.Type === 'MAGAZINE') {
                         feed = response.data.Items.filter(item => item.type === 'magazine');
                     } else if (this.props.Type === 'NEWSPAPER') {
-                        feed = response.data.Items.filter(item => item.type === 'magazine');
+                        feed = response.data.Items.filter(item => item.type === 'newspaper');
                     } else {
                         feed = response.data.Items;
                     }
@@ -41,8 +41,6 @@ class MagazinFrameContainer extends Component {
                                 magazins.push([feed[i]]);
                             }
                         }
-
-
                     }
                     console.log('magazins: ', magazins);
                     this.props.add_magazin(magazins);
@@ -93,13 +91,15 @@ class MagazinFrameContainer extends Component {
     };
 
     renderHeader = () => {
+        const {Type} = this.props;
+
         return (
             <View style={styles.mainContainer}>
                 <View style={{flex: 1, flexDirection: 'row', marginHorizontal: Dimensions.get('window').width * 0.02}}>
                     <TextInput
                         style={styles.searchBoxStyle}
                         placeholderTextColor={'#8E9494'}
-                        placeholder={'Dergi Ara'}
+                        placeholder={Type === 'MIX' ? 'Yayın Ara' : Type === 'MAGAZINE' ? 'Dergi Ara' : 'Gazete Ara'}
                         onChangeText={value => this.onChangeText('search_text', value)}
                         multiline={false}
                         autoFocus={false}
