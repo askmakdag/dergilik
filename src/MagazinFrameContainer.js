@@ -24,7 +24,14 @@ class MagazinFrameContainer extends Component {
             .then(response => {
                     console.log('Get API Response: ', response);
 
-                    const feed = response.data.Items.filter(item => item.type === 'magazine');
+                    let feed = [];
+                    if (this.props.Type === 'MAGAZINE') {
+                        feed = response.data.Items.filter(item => item.type === 'magazine');
+                    } else if (this.props.Type === 'NEWSPAPER') {
+                        feed = response.data.Items.filter(item => item.type === 'magazine');
+                    } else {
+                        feed = response.data.Items;
+                    }
 
                     for (let i = 0; i < feed.length; i++) {
                         if (i % 2 === 0) {

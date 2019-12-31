@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         marginVertical: 40,
         color: '#AEB6BF',
-        fontFamily: 'HelveticaNeue-MediumItalic'
+        fontFamily: 'HelveticaNeue-MediumItalic',
     },
 });
 

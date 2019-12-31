@@ -1,4 +1,3 @@
-// Homescreen.js
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import MagazinFrameContainer from '../MagazinFrameContainer';
@@ -17,7 +16,7 @@ export default class HomeScreen extends Component {
         return (
             <Provider store={store}>
                 <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <MagazinFrameContainer/>
+                    <MagazinFrameContainer Type={'MIX'}/>
                 </View>
             </Provider>
         );
