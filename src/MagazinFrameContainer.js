@@ -16,18 +16,32 @@ class MagazinFrameContainer extends Component {
         };
     }
 
-    componentWillMount() {
-        axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
+    async componentWillMount() {
+        const magazins = [];
+        await axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
                     console.log('Get API Response: ', response);
-                    //this.setState({magazins: response.data.Items, magazinsX: response.data.Items});
-                    this.props.add_magazin(response.data.Items);
+
+                    const feed = response.data.Items.filter(item => item.type === 'magazine');
+
+                    for (let i = 0; i < feed.length; i++) {
+                        if (i % 2 === 0) {
+                            if (typeof feed[i + 1] !== 'undefined') {
+                                magazins.push([feed[i], feed[i + 1]]);
+                            } else {
+                                magazins.push([feed[i]]);
+                            }
+                        }
+
+
+                    }
+                    console.log('magazins: ', magazins);
+                    this.props.add_magazin(magazins);
                 },
             )
             .catch(function (error) {
                 console.log('Get API Hatası: ', error);
             });
-
     }
 
     onChangeText(key, value) {
@@ -116,16 +130,25 @@ class MagazinFrameContainer extends Component {
         );
     };
 
+    renderItem = (item) => {
+        if (item.length === 2) {
+            return <View style={styles.renderItemContainerStyle}>
+                <MagazinFrame magazinName={item[0].name} magazinYear={item[0].year} from={'HOME_PAGE'}/>
+                <MagazinFrame magazinName={item[1].name} magazinYear={item[1].year} from={'HOME_PAGE'}/>
+            </View>;
+        } else {
+            return <MagazinFrame magazinName={item[0].name} magazinYear={item[0].year} from={'HOME_PAGE'}/>;
+        }
+    };
+
     render() {
         const {magazins} = this.props;
 
         return (
             <FlatList
                 data={magazins}
-                renderItem={({item}) => (
-                    <MagazinFrame magazinName={item.name} magazinYear={item.year} from={'HOME_PAGE'}/>
-                )}
-                keyExtractor={item => item.magazinId}
+                renderItem={({item}) => this.renderItem(item)}
+                keyExtractor={item => item[0].magazinId}
                 refreshing={this.state.refreshing}
                 ListHeaderComponent={this.renderHeader}
                 showsVerticalScrollIndicator={false}
@@ -139,7 +162,7 @@ class MagazinFrameContainer extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
-        width: Dimensions.get('window').width * 0.8,
+        width: Dimensions.get('window').width * 0.9,
         marginLeft: '2.5%',
         marginTop: 8,
     },
@@ -207,6 +230,11 @@ const styles = StyleSheet.create({
         width: '97%',
         borderRadius: 15,
         marginTop: 10,
+    },
+    renderItemContainerStyle: {
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
 });
 

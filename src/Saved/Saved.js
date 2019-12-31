@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import {View, Button, StyleSheet, FlatList, Dimensions} from 'react-native';
+import {View, StyleSheet, FlatList, Dimensions} from 'react-native';
 import MagazinFrame from '../MagazinFrame';
 import {withNavigation} from 'react-navigation';
-import SignIn from '../../Authentication/SignIn';
-import {Auth} from 'aws-amplify';
 import SQLite from 'react-native-sqlite-2';
 import {Icon} from 'react-native-elements';
 import generalSettings from '../generalSettings';
@@ -23,7 +21,6 @@ class Saved extends Component {
         return {
             headerTitle: 'Kaydettiklerim',
             headerRight: (
-
                 <Icon
                     name='settings'
                     onPress={() => navigation.navigate('Settings')}

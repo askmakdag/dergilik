@@ -134,7 +134,6 @@ class MagazinFrame extends Component {
                 <View style={styles.magazinInfoContainerStyle}>
                     <Text style={styles.magazinInfoTextStyle}> {this.props.magazinName} </Text>
                     <Text style={styles.magazinInfoTextStyle}> {this.props.magazinYear} </Text>
-
                 </View>
             </TouchableOpacity>
         );
@@ -144,29 +143,28 @@ class MagazinFrame extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#DFECEB',
-        height: Dimensions.get('window').width * 1.33,
-        width: Dimensions.get('window').width * 0.9,
+        backgroundColor: '#FFF',
         marginVertical: 10,
     },
     coverStyle: {
         flex: 1,
-        width: '100%',
-        height: '100%',
+        height: Dimensions.get('window').width * 0.6,
+        width: Dimensions.get('window').width * 0.42,
         resizeMode: 'cover',
-        padding: 5,
     },
     magazinInfoContainerStyle: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
+        alignItems: 'center',
         marginTop: 5,
         marginBottom: 3,
         width: Dimensions.get('window').width * 0.9,
     },
     magazinInfoTextStyle: {
-        fontSize: 15,
+        fontSize: 12,
         fontWeight: '400',
         color: '#202323',
     },
