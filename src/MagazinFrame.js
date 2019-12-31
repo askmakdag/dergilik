@@ -29,7 +29,7 @@ class MagazinFrame extends Component {
     getUrl() {
         const params = {
             Bucket: aws_credentials.s3Bucket,
-            Key: 'uploads/' + this.props.magazinName + ' Cover.png',
+            Key: 'uploads/' + this.props.Name + ' Cover.png',
         };
         const url = s3.getSignedUrl('getObject', params);
         console.log('generated url: ', url);
@@ -37,7 +37,7 @@ class MagazinFrame extends Component {
     }
 
     navigateToMagazin = () => {
-        this.props.navigation.navigate('MagazinComponent', {name: this.props.magazinName, from: this.props.from});
+        this.props.navigation.navigate('MagazinComponent', {name: this.props.Name, from: this.props.From});
     };
 
     componentWillMount = async () => {
@@ -47,7 +47,7 @@ class MagazinFrame extends Component {
 
     saveMagazin = () => {
         Alert.alert(
-            this.props.magazinName,
+            this.props.Name,
             'Dergiyi kaydetmek istediğinize emin misiniz?',
             [
                 {text: 'İptal', style: 'cancel'},
@@ -60,7 +60,7 @@ class MagazinFrame extends Component {
     saveToDatabase = () => {
         const params = {
             Bucket: aws_credentials.s3Bucket,
-            Key: 'uploads/' + this.props.magazinName + '.pdf',
+            Key: 'uploads/' + this.props.Name + '.pdf',
         };
         const url = s3.getSignedUrl('getObject', params);
 
@@ -74,13 +74,13 @@ class MagazinFrame extends Component {
                     // the conversion is done in native code
                     let magazin_base64 = res.base64();
 
-                    const magazinName = this.props.magazinName;
-                    const magazinYear = this.props.magazinYear;
+                    const Name = this.props.Name;
+                    const Year = this.props.Year;
 
                     db.transaction((tx) => {
                         //tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
                         tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazins(magazinId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
-                        tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', [magazinName, magazinYear, magazin_base64]);
+                        tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', [Name, Year, magazin_base64]);
                         tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
                             for (let i = 0; i < results.rows.length; i++) {
                                 console.log('item:', results.rows.item(i));
@@ -100,7 +100,7 @@ class MagazinFrame extends Component {
     fetchPdf = () => {
         const params = {
             Bucket: aws_credentials.s3Bucket,
-            Key: 'uploads/' + this.props.magazinName + '.pdf',
+            Key: 'uploads/' + this.props.Name + '.pdf',
         };
         const url = s3.getSignedUrl('getObject', params);
 
@@ -132,8 +132,13 @@ class MagazinFrame extends Component {
                     source={{uri: path}}
                 />
                 <View style={styles.magazinInfoContainerStyle}>
-                    <Text style={styles.magazinInfoTextStyle}> {this.props.magazinName} </Text>
-                    <Text style={styles.magazinInfoTextStyle}> {this.props.magazinYear} </Text>
+                    <Text style={styles.magazinNameTextStyle}>{this.props.Name}</Text>
+                    <Text style={styles.magazinInfoTextStyle}>{this.props.TeaserInfo}</Text>
+
+                    <View style={styles.bottomInfoContainerStyle}>
+                        <Text style={styles.bottomInfoTextStyle}>{this.props.Year}</Text>
+                        <Text style={styles.bottomInfoTextStyle}>{this.props.ViewedCount} kez okundu</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -142,31 +147,49 @@ class MagazinFrame extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FFF',
+        height: Dimensions.get('window').width * 0.87,
+        width: Dimensions.get('window').width * 0.47,
+        backgroundColor: '#fff',
         marginVertical: 10,
     },
     coverStyle: {
         flex: 1,
-        height: Dimensions.get('window').width * 0.6,
-        width: Dimensions.get('window').width * 0.42,
+        // height: Dimensions.get('window').width * 0.6,
+        // width: Dimensions.get('window').width * 0.42,
         resizeMode: 'cover',
     },
     magazinInfoContainerStyle: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        alignItems: 'center',
         marginTop: 5,
         marginBottom: 3,
         width: Dimensions.get('window').width * 0.9,
+        marginHorizontal: 10,
     },
     magazinInfoTextStyle: {
         fontSize: 12,
-        fontWeight: '400',
+        fontWeight: '500',
         color: '#202323',
+        marginVertical: 10,
+    },
+    magazinNameTextStyle: {
+        fontSize: 14,
+        fontWeight: '400',
+        color: '#2f2f2f',
+        marginVertical: 10,
+    },
+    bottomInfoContainerStyle: {
+        width: Dimensions.get('window').width * 0.4,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+    },
+    bottomInfoTextStyle: {
+        fontSize: 8,
+        fontWeight: '300',
+        color: '#757677',
     },
 });
 

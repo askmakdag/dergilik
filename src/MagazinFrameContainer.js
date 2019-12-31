@@ -5,6 +5,8 @@ import axios from 'axios';
 import {add_magazin} from './Store/Actions/index';
 import {connect} from 'react-redux';
 
+const backgroundColor = '#dcddde';
+
 class MagazinFrameContainer extends Component {
 
     constructor(props) {
@@ -86,7 +88,7 @@ class MagazinFrameContainer extends Component {
     renderHeader = () => {
         return (
             <View style={styles.mainContainer}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{flex: 1, flexDirection: 'row', marginHorizontal: Dimensions.get('window').width * 0.02}}>
                     <TextInput
                         style={styles.searchBoxStyle}
                         placeholderTextColor={'#8E9494'}
@@ -99,7 +101,11 @@ class MagazinFrameContainer extends Component {
                     <TouchableOpacity onPress={() => this.handleVisibilityModal()}>
                         <Image
                             source={require('../assets/sort.png')}
-                            style={{width: 23, height: 23, marginHorizontal: 5, marginVertical: 5}}
+                            style={{
+                                width: Dimensions.get('window').width * 0.06,
+                                height: Dimensions.get('window').width * 0.06,
+                                marginHorizontal: 5, marginVertical: 5,
+                            }}
                         />
                     </TouchableOpacity>
                 </View>
@@ -133,11 +139,25 @@ class MagazinFrameContainer extends Component {
     renderItem = (item) => {
         if (item.length === 2) {
             return <View style={styles.renderItemContainerStyle}>
-                <MagazinFrame magazinName={item[0].name} magazinYear={item[0].year} from={'HOME_PAGE'}/>
-                <MagazinFrame magazinName={item[1].name} magazinYear={item[1].year} from={'HOME_PAGE'}/>
+                <MagazinFrame Name={item[0].name}
+                              Year={item[0].year}
+                              TeaserInfo={item[0].teaser_info}
+                              ViewedCount={item[0].viewed_count}
+                              From={'HOME_PAGE'}/>
+                <MagazinFrame Name={item[1].name}
+                              Year={item[1].year}
+                              TeaserInfo={item[1].teaser_info}
+                              ViewedCount={item[1].viewed_count}
+                              From={'HOME_PAGE'}/>
             </View>;
         } else {
-            return <MagazinFrame magazinName={item[0].name} magazinYear={item[0].year} from={'HOME_PAGE'}/>;
+            return <View style={{marginHorizontal: Dimensions.get('window').width * 0.02}}>
+                <MagazinFrame Name={item[0].name}
+                              Year={item[0].year}
+                              TeaserInfo={item[0].teaser_info}
+                              ViewedCount={item[0].viewed_count}
+                              From={'HOME_PAGE'}/>
+            </View>;
         }
     };
 
@@ -153,7 +173,7 @@ class MagazinFrameContainer extends Component {
                 ListHeaderComponent={this.renderHeader}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{flexGrow: 1}}
-                style={{flex: 1}}
+                style={{flex: 1, backgroundColor: backgroundColor}}
             />
         );
     }
@@ -162,19 +182,18 @@ class MagazinFrameContainer extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
-        width: Dimensions.get('window').width * 0.9,
-        marginLeft: '2.5%',
+        width: Dimensions.get('window').width,
         marginTop: 8,
     },
     searchBoxStyle: {
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 15,
-        width: Dimensions.get('window').width * 0.8,
+        width: Dimensions.get('window').width * 0.88,
         height: 35,
         textAlign: 'left',
         paddingHorizontal: 20,
-        backgroundColor: '#DFECEB',
+        backgroundColor: '#fafafa',
         fontWeight: '500',
         color: '#000',
     },
@@ -233,8 +252,10 @@ const styles = StyleSheet.create({
     },
     renderItemContainerStyle: {
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        backgroundColor: backgroundColor,
+        marginHorizontal: Dimensions.get('window').width * 0.02,
     },
 });
 
