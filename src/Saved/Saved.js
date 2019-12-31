@@ -5,6 +5,8 @@ import {withNavigation} from 'react-navigation';
 import SignIn from '../../Authentication/SignIn';
 import {Auth} from 'aws-amplify';
 import SQLite from 'react-native-sqlite-2';
+import {Icon} from 'react-native-elements';
+import generalSettings from '../generalSettings';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
@@ -17,13 +19,19 @@ class Saved extends Component {
         };
     }
 
-    static navigationOptions = {
-        title: 'SAVED',
-    };
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: 'Kaydettiklerim',
+            headerRight: (
 
-    SignOut = async () => {
-        await Auth.signOut();
-        this.props.navigation.navigate('SignIn');
+                <Icon
+                    name='settings'
+                    onPress={() => navigation.navigate('Settings')}
+                    containerStyle={{marginHorizontal: 10}}
+                    color={generalSettings.buttonColor}
+                />
+            ),
+        };
     };
 
     async componentWillMount() {
@@ -40,14 +48,6 @@ class Saved extends Component {
         });
     }
 
-    renderFooter = () => {
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', marginVertical: 15}}>
-                <Button title={'Çıkış Yap'} onPress={() => this.SignOut()}/>
-            </View>
-        );
-    };
-
     render() {
         const {magazins} = this.state;
 
@@ -61,7 +61,6 @@ class Saved extends Component {
                     keyExtractor={item => item.magazinId}
                     refreshing={this.state.refreshing}
                     showsVerticalScrollIndicator={false}
-                    ListFooterComponent={this.renderFooter}
                     contentContainerStyle={{flexGrow: 1}}
                     style={{flex: 1}}
                 />

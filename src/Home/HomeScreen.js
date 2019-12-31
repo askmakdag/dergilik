@@ -10,7 +10,7 @@ const store = configureStore();
 export default class HomeScreen extends Component {
 
     static navigationOptions = {
-        title: 'MAGAZINS',
+        title: 'Ana Sayfa',
     };
 
     render() {

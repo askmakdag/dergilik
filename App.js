@@ -14,8 +14,13 @@ import MagazinFrame from './src/MagazinFrame';
 import MagazinComponent from './src/MagazinComponent';
 import Saved from './src/Saved/Saved';
 import PrivacyPolicy from './Authentication/PrivacyPolicy';
+import Magazines from './src/Magazines/Magazines';
+import Newspapers from './src/Newspapers/Newspapers';
+import Settings from './src/Settings/Settings';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import generalSettings from './src/generalSettings';
 
-const AppStack = createStackNavigator({
+const HomeStack = createStackNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: {
@@ -68,38 +73,63 @@ const AuthStack = createStackNavigator({
         },
     },
 });
-const SavedStack = createStackNavigator({Saved: Saved});
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+const MagazinesdStack = createStackNavigator({
+    Magazines: {
+        screen: Magazines,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+});
+const NewspapersdStack = createStackNavigator({
+    Newspapers: {
+        screen: Newspapers,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+});
+const SavedStack = createStackNavigator({
+    Saved: {
+        screen: Saved,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+    Settings: {
+        screen: Settings,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+});
 
 const MainTabs = createBottomTabNavigator({
     Home: {
-        screen: AppStack,
+        screen: HomeStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarLabel: 'HOME PAGE',
             tabBarIcon: () => (
-                <Icon name="home" size={30} color="#0A7CA9"/>
+                <Icon name="home" size={30} color={generalSettings.buttonColor}/>
             ),
         },
     },
     Magazines: {
-        screen: SavedStack,
+        screen: MagazinesdStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarLabel: 'MAGAZINES',
             tabBarIcon: () => (
-                <Icon name="book" size={30} color="#0A7CA9"/>
+                <Icon name="book" size={30} color={generalSettings.buttonColor}/>
             ),
         },
     },
     NewsPapers: {
-        screen: AppStack,
+        screen: NewspapersdStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarLabel: 'NEWSPAPERS',
             tabBarIcon: () => (
-                <Icon name="newspaper" size={30} color="#0A7CA9"/>
+                <Icon name="newspaper" size={30} color={generalSettings.buttonColor}/>
             ),
         },
     },
@@ -107,14 +137,13 @@ const MainTabs = createBottomTabNavigator({
         screen: SavedStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarLabel: 'SAVED',
             tabBarIcon: () => (
-                <Icon name="download" size={30} color="#0A7CA9"/>
+                <Icon name="download" size={30} color={generalSettings.buttonColor}/>
             ),
         },
     },
 }, {
-    tabBarOptions: {showLabel: true},
+    tabBarOptions: {showLabel: false},
 });
 
 export default createAppContainer(
