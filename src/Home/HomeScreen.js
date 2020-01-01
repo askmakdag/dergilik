@@ -11,6 +11,26 @@ class HomeScreen extends Component {
         title: 'Ana Sayfa',
     };
 
+    sortBy = (type) => {
+        let json = this.props.feed;
+
+        if (type === 'DATE') {
+            json.sort(function (a, b) {
+                return a.year - b.year;
+            });
+            console.log('sorted json by DATE: ', json);
+            this.props.add_feed(json);
+        }
+
+        if (type === 'NAME') {
+            json.sort(function (a, b) {
+                return ('' + a.name).localeCompare(b.name);
+            });
+            console.log('sorted json by NAME: ', json);
+            this.props.add_feed(json);
+        }
+    };
+
     async componentWillMount() {
         await axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
@@ -33,7 +53,9 @@ class HomeScreen extends Component {
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <MagazinFrameContainer Type={'MIX'} Data={this.props.feed}/>
+                <MagazinFrameContainer Type={'MIX'}
+                                       Data={this.props.sorted_feed}
+                                       sortBy={(type) => this.sortBy(type)}/>
             </View>
         );
     }
@@ -41,7 +63,8 @@ class HomeScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        feed: state.magazinesStore.feed[0],
+        sorted_feed: state.magazinesStore.sorted_feed,
+        feed: state.magazinesStore.feed,
     };
 };
 
@@ -49,7 +72,7 @@ const mapDispatchToProps = dispatch => {
     return {
         add_feed: (feed) => dispatch(add_feed(feed)),
         add_magazine: (magazine) => dispatch(add_magazine(magazine)),
-        add_newspaper: (magazine) => dispatch(add_newspaper(magazine)),
+        add_newspaper: (newspaper) => dispatch(add_newspaper(newspaper)),
     };
 };
 

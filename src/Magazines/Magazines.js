@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
 import MagazinFrameContainer from '../MagazineFrameContainer';
+import {add_magazine} from '../Store/Actions';
 
 class Magazines extends Component {
 
@@ -9,10 +10,32 @@ class Magazines extends Component {
         title: 'Dergiler',
     };
 
+    sortBy = (type) => {
+        let json = this.props.magazines;
+
+        if (type === 'DATE') {
+            json.sort(function (a, b) {
+                return a.year - b.year;
+            });
+            console.log('sorted json by DATE: ', json);
+            this.props.add_feed(json);
+        }
+
+        if (type === 'NAME') {
+            json.sort(function (a, b) {
+                return ('' + a.name).localeCompare(b.name);
+            });
+            console.log('sorted json by NAME: ', json);
+            this.props.add_magazine(json);
+        }
+    };
+
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <MagazinFrameContainer Type={'MAGAZINE'} Data={this.props.magazines}/>
+                <MagazinFrameContainer Type={'MAGAZINE'}
+                                       Data={this.props.sorted_magazines}
+                                       sortBy={(type) => this.sortBy(type)}/>
             </View>
         );
     }
@@ -20,8 +43,16 @@ class Magazines extends Component {
 
 const mapStateToProps = state => {
     return {
-        magazines: state.magazinesStore.magazines[0],
+        magazines: state.magazinesStore.magazines,
+        sorted_magazines: state.magazinesStore.sorted_magazines,
     };
 };
 
-export default connect(mapStateToProps, null)(Magazines);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        add_magazine: (magazine) => dispatch(add_magazine(magazine)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Magazines);

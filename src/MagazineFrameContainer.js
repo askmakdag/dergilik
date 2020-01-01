@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList, TextInput, Dimensions} from 'react-native';
 import MagazinFrame from './MagazineFrame';
-import {add_magazine} from './Store/Actions/index';
+import {add_feed, add_magazine, add_newspaper} from './Store/Actions/index';
 import {connect} from 'react-redux';
 
 const backgroundColor = '#dcddde';
@@ -34,22 +34,8 @@ class MagazineFrameContainer extends Component {
     }
 
     sortBy = (type) => {
-        let json = this.state.magazines;
-        this.setState({modalVisible: false});
-
-        if (type === 'DATE') {
-            json.sort(function (a, b) {
-                return a.year - b.year;
-            });
-            console.log('sorted json by DATE: ', json);
-        }
-
-        if (type === 'NAME') {
-            json.sort(function (a, b) {
-                return ('' + a.name).localeCompare(b.name);
-            });
-            console.log('sorted json by NAME: ', json);
-        }
+        this.props.sortBy(type);
+        this.handleVisibilityModal();
     };
 
     handleVisibilityModal = () => {
@@ -233,15 +219,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-    return {
-        magazines: state.magazinesStore.magazines[0],
-    };
+    return {};
 };
 
 const mapDispatchToProps = dispatch => {
     return {
+        add_feed: (feed) => dispatch(add_feed(feed)),
         add_magazine: (magazine) => dispatch(add_magazine(magazine)),
-
+        add_newspaper: (magazine) => dispatch(add_newspaper(magazine)),
     };
 };
 

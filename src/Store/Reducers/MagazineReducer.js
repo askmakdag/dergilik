@@ -8,8 +8,13 @@ import update from 'react-addons-update';
 
 const initialState = {
     feed: [],
+    sorted_feed: [],
+
     newspapers: [],
+    sorted_newspapers: [],
+
     magazines: [],
+    sorted_magazines: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,6 +22,7 @@ const reducer = (state = initialState, action) => {
 
         case GET_FEED:
             const items = [];
+            console.log('get feed: ', action.feed);
 
             for (let i = 0; i < action.feed.length; i++) {
                 if (i % 2 === 0) {
@@ -29,7 +35,8 @@ const reducer = (state = initialState, action) => {
             }
 
             return update(state, {
-                feed: {$push: [items]},
+                sorted_feed: {$set: items},
+                feed: {$set: action.feed},
             });
 
         case GET_MAGAZINES:
@@ -46,7 +53,8 @@ const reducer = (state = initialState, action) => {
             }
 
             return update(state, {
-                magazines: {$push: [magazine_items]},
+                magazines: {$set: action.magazines},
+                sorted_magazines: {$set: magazine_items},
             });
 
         case GET_NEWSPAPERS:
@@ -63,7 +71,8 @@ const reducer = (state = initialState, action) => {
             }
 
             return update(state, {
-                newspapers: {$push: [newspaper_items]},
+                newspapers: {$set: action.newspapers},
+                sorted_newspapers: {$set: newspaper_items},
             });
 
         default:
