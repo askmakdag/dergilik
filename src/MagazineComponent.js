@@ -19,12 +19,12 @@ import RNFetchBlob from 'rn-fetch-blob';
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 let Spinner = require('react-native-spinkit');
 
-class MagazinComponent extends Component {
+class MagazineComponent extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            magazin_path: {},
+            magazine_path: {},
         };
     };
 
@@ -53,7 +53,7 @@ class MagazinComponent extends Component {
             .then((res) => {
                 // the temp file path
                 console.log('The file saved to ', res.path());
-                this.setState({magazin_path: {uri: Platform.OS === 'android' ? 'file://' + res.path() : '' + res.path()}});
+                this.setState({magazine_path: {uri: Platform.OS === 'android' ? 'file://' + res.path() : '' + res.path()}});
             });
     };
 
@@ -71,13 +71,13 @@ class MagazinComponent extends Component {
     };
 
     render() {
-        console.log('path:: ', this.state.magazin_path);
+        console.log('path:: ', this.state.magazine_path);
         return <View style={styles.pdfContainerStyle}>
             <Pdf
                 horizontal={true}
                 fitPolicy={2}
                 enablePaging={true}
-                source={this.state.magazin_path}
+                source={this.state.magazine_path}
                 style={styles.pdfStyle}
                 activityIndicator={this.asd()}
             />
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(MagazinComponent);
+export default withNavigation(MagazineComponent);

@@ -2,6 +2,10 @@ import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import React from 'react';
+import configureStore from './src/Store/ConfigureStore';
+import {Provider} from 'react-redux';
+
+const store = configureStore();
 
 // goes here.
 import HomeScreen from './src/Home/HomeScreen';
@@ -9,9 +13,9 @@ import SignIn from './Authentication/SignIn';
 import SignUp from './Authentication/SignUp';
 import AuthLoadingScreen from './Authentication/AuthLoadingScreen';
 import ConfirmSignIn from './Authentication/ConfirmSignIn';
-import MagazinFrameContainer from './src/MagazinFrameContainer';
-import MagazinFrame from './src/MagazinFrame';
-import MagazinComponent from './src/MagazinComponent';
+import MagazineFrameContainer from './src/MagazineFrameContainer';
+import MagazineFrame from './src/MagazineFrame';
+import MagazineComponent from './src/MagazineComponent';
 import Saved from './src/Saved/Saved';
 import PrivacyPolicy from './Authentication/PrivacyPolicy';
 import Magazines from './src/Magazines/Magazines';
@@ -27,20 +31,20 @@ const HomeStack = createStackNavigator({
             headerBackTitle: 'Geri',
         },
     },
-    MagazinFrameContainer: {
-        screen: MagazinFrameContainer,
+    MagazineFrameContainer: {
+        screen: MagazineFrameContainer,
         navigationOptions: {
             headerBackTitle: 'Geri',
         },
     },
-    MagazinFrame: {
-        screen: MagazinFrame,
+    MagazineFrame: {
+        screen: MagazineFrame,
         navigationOptions: {
             headerBackTitle: 'Geri',
         },
     },
-    MagazinComponent: {
-        screen: MagazinComponent,
+    MagazineComponent: {
+        screen: MagazineComponent,
         navigationOptions: {
             headerBackTitle: 'Geri',
         },
@@ -82,7 +86,7 @@ const MagazinesdStack = createStackNavigator({
         },
     },
 });
-const NewspapersdStack = createStackNavigator({
+const NewspapersStack = createStackNavigator({
     Newspapers: {
         screen: Newspapers,
         navigationOptions: {
@@ -125,7 +129,7 @@ const MainTabs = createBottomTabNavigator({
         },
     },
     NewsPapers: {
-        screen: NewspapersdStack,
+        screen: NewspapersStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
             tabBarIcon: () => (
@@ -146,7 +150,7 @@ const MainTabs = createBottomTabNavigator({
     tabBarOptions: {showLabel: false},
 });
 
-export default createAppContainer(
+let Navigation = createAppContainer(
     createSwitchNavigator(
         {
             AuthLoading: AuthLoadingScreen,
@@ -158,3 +162,14 @@ export default createAppContainer(
         },
     ),
 );
+
+// Render the app container component with the provider around it
+export default class App extends React.Component {
+    render() {
+        return (
+            <Provider store={store}>
+                <Navigation/>
+            </Provider>
+        );
+    }
+}

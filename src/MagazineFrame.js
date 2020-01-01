@@ -18,7 +18,7 @@ import SQLite from 'react-native-sqlite-2';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
-class MagazinFrame extends Component {
+class MagazineFrame extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -36,8 +36,8 @@ class MagazinFrame extends Component {
         return url;
     }
 
-    navigateToMagazin = () => {
-        this.props.navigation.navigate('MagazinComponent', {name: this.props.Name, from: this.props.From});
+    navigateToMagazine = () => {
+        this.props.navigation.navigate('MagazineComponent', {name: this.props.Name, from: this.props.From});
     };
 
     componentWillMount = async () => {
@@ -45,7 +45,7 @@ class MagazinFrame extends Component {
         await this.setState({path: path});
     };
 
-    saveMagazin = () => {
+    saveMagazine = () => {
         Alert.alert(
             this.props.Name,
             'Dergiyi kaydetmek istediğinize emin misiniz?',
@@ -72,16 +72,16 @@ class MagazinFrame extends Component {
 
                 if (status === 200) {
                     // the conversion is done in native code
-                    let magazin_base64 = res.base64();
+                    let magazine_base64 = res.base64();
 
                     const Name = this.props.Name;
                     const Year = this.props.Year;
 
                     db.transaction((tx) => {
-                        //tx.executeSql('DROP TABLE IF EXISTS table_magazins', []);
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazins(magazinId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
-                        tx.executeSql('INSERT INTO table_magazins (name, year, magazin_base64) VALUES (?,?,?)', [Name, Year, magazin_base64]);
-                        tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
+                        //tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
+                        tx.executeSql('INSERT INTO table_magazines (name, year, magazine_base64) VALUES (?,?,?)', [Name, Year, magazine_base64]);
+                        tx.executeSql('SELECT * FROM table_magazines', [], (tx, results) => {
                             for (let i = 0; i < results.rows.length; i++) {
                                 console.log('item:', results.rows.item(i));
                             }
@@ -116,7 +116,7 @@ class MagazinFrame extends Component {
             .then((res) => {
                 // the temp file path
                 console.log('The file saved to ', res.path());
-                this.setState({magazin_path: res.path()});
+                this.setState({magazine_path: res.path()});
             });
     };
 
@@ -125,15 +125,15 @@ class MagazinFrame extends Component {
         const {path} = this.state;
 
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazin()}
-                              onLongPress={() => this.saveMagazin()}>
+            <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazine()}
+                              onLongPress={() => this.saveMagazine()}>
                 <Image
                     style={styles.coverStyle}
                     source={{uri: path}}
                 />
-                <View style={styles.magazinInfoContainerStyle}>
-                    <Text style={styles.magazinNameTextStyle}>{this.props.Name}</Text>
-                    <Text style={styles.magazinInfoTextStyle}>{this.props.TeaserInfo}</Text>
+                <View style={styles.magazineInfoContainerStyle}>
+                    <Text style={styles.magazineNameTextStyle}>{this.props.Name}</Text>
+                    <Text style={styles.magazineInfoTextStyle}>{this.props.TeaserInfo}</Text>
 
                     <View style={styles.bottomInfoContainerStyle}>
                         <Text style={styles.bottomInfoTextStyle}>{this.props.Year}</Text>
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         // width: Dimensions.get('window').width * 0.42,
         resizeMode: 'cover',
     },
-    magazinInfoContainerStyle: {
+    magazineInfoContainerStyle: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         marginTop: 5,
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.9,
         marginHorizontal: 10,
     },
-    magazinInfoTextStyle: {
+    magazineInfoTextStyle: {
         fontSize: 12,
         fontWeight: '500',
         color: '#202323',
         marginVertical: 10,
     },
-    magazinNameTextStyle: {
+    magazineNameTextStyle: {
         fontSize: 14,
         fontWeight: '400',
         color: '#2f2f2f',
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        magazins: state.magazinsStore.magazins,
+        magazines: state.magazinesStore.magazines,
     };
 };
 
@@ -204,4 +204,4 @@ const mapDispatchToProps = dispatch => {
     return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MagazinFrame));
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MagazineFrame));

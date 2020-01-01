@@ -1,54 +1,20 @@
 import React, {Component} from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList, TextInput, Dimensions} from 'react-native';
-import MagazinFrame from './MagazinFrame';
-import axios from 'axios';
-import {add_magazin} from './Store/Actions/index';
+import MagazinFrame from './MagazineFrame';
+import {add_magazine} from './Store/Actions/index';
 import {connect} from 'react-redux';
 
 const backgroundColor = '#dcddde';
 
-class MagazinFrameContainer extends Component {
+class MagazineFrameContainer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazinsX: [],
+            magazinesX: [],
         };
-    }
-
-    async componentWillMount() {
-        const magazins = [];
-        await axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
-            .then(response => {
-                    console.log('Get API Response: ', response);
-
-                    let feed = [];
-                    if (this.props.Type === 'MAGAZINE') {
-                        feed = response.data.Items.filter(item => item.type === 'magazine');
-                    } else if (this.props.Type === 'NEWSPAPER') {
-                        feed = response.data.Items.filter(item => item.type === 'newspaper');
-                    } else {
-                        feed = response.data.Items;
-                    }
-
-                    for (let i = 0; i < feed.length; i++) {
-                        if (i % 2 === 0) {
-                            if (typeof feed[i + 1] !== 'undefined') {
-                                magazins.push([feed[i], feed[i + 1]]);
-                            } else {
-                                magazins.push([feed[i]]);
-                            }
-                        }
-                    }
-                    console.log('magazins: ', magazins);
-                    this.props.add_magazin(magazins);
-                },
-            )
-            .catch(function (error) {
-                console.log('Get API Hatası: ', error);
-            });
     }
 
     onChangeText(key, value) {
@@ -56,19 +22,19 @@ class MagazinFrameContainer extends Component {
             key: value,
         });
 
-        let json = this.state.magazinsX;
+        let json = this.state.magazinesX;
         const result = json.filter(word => word.name.indexOf(value) >= 0);
         if (result.length === 0) {
             /** Aranan bulunamaz ise hepsini listele.*/
-            //this.setState({magazins: this.state.magazinsX});
+            //this.setState({magazines: this.state.magazinesX});
         } else {
             /** Aranan bulunur ise arananı listele.*/
-            //this.setState({magazins: result});
+            //this.setState({magazines: result});
         }
     }
 
     sortBy = (type) => {
-        let json = this.state.magazins;
+        let json = this.state.magazines;
         this.setState({modalVisible: false});
 
         if (type === 'DATE') {
@@ -169,11 +135,11 @@ class MagazinFrameContainer extends Component {
     };
 
     render() {
-        const {magazins} = this.props;
+        const {Data} = this.props;
 
         return (
             <FlatList
-                data={magazins}
+                data={Data}
                 renderItem={({item}) => this.renderItem(item)}
                 keyExtractor={item => item[0].magazinId}
                 refreshing={this.state.refreshing}
@@ -268,15 +234,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        magazins: state.magazinsStore.magazins[0],
+        magazines: state.magazinesStore.magazines[0],
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        add_magazin: (magazin) => dispatch(add_magazin(magazin)),
+        add_magazine: (magazine) => dispatch(add_magazine(magazine)),
 
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MagazinFrameContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(MagazineFrameContainer);

@@ -1,4 +1,6 @@
 export {
-    add_magazin,
-} from './MagazinAction';
+    add_magazine,
+    add_feed,
+    add_newspaper,
+} from './MagazineAction';
 

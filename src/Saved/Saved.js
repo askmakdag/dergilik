@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, StyleSheet, FlatList, Dimensions} from 'react-native';
-import MagazinFrame from '../MagazinFrame';
+import MagazinFrame from '../MagazineFrame';
 import {withNavigation} from 'react-navigation';
 import SQLite from 'react-native-sqlite-2';
 import {Icon} from 'react-native-elements';

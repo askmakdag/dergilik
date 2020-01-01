@@ -3,10 +3,10 @@ import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
-import magazinReducer from './Reducers/MagazinReducer';
+import magazineReducer from './Reducers/MagazineReducer';
 
 const rootReducer = combineReducers({
-    magazinsStore: magazinReducer,
+    magazinesStore: magazineReducer,
 });
 
 const composeEnhancers =

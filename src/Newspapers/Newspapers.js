@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
-import {Provider} from 'react-redux';
-import MagazinFrameContainer from '../MagazinFrameContainer';
-import configureStore from '../Store/ConfigureStore';
-
-const store = configureStore();
+import {connect} from 'react-redux';
+import MagazinFrameContainer from '../MagazineFrameContainer';
 
 class Newspapers extends Component {
 
@@ -14,13 +11,17 @@ class Newspapers extends Component {
 
     render() {
         return (
-            <Provider store={store}>
-                <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                    <MagazinFrameContainer Type={'NEWSPAPER'}/>
-                </View>
-            </Provider>
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <MagazinFrameContainer Type={'NEWSPAPER'} Data={this.props.newspapers}/>
+            </View>
         );
     }
 }
 
-export default Newspapers;
+const mapStateToProps = state => {
+    return {
+        newspapers: state.magazinesStore.newspapers[0],
+    };
+};
+
+export default connect(mapStateToProps, null)(Newspapers);
