@@ -15,6 +15,7 @@ const s3 = new AWS.S3({
 });
 
 import SQLite from 'react-native-sqlite-2';
+import CacheImageComponent from './Components/CacheImageComponent';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
@@ -127,10 +128,7 @@ class MagazineFrame extends Component {
         return (
             <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazine()}
                               onLongPress={() => this.saveMagazine()}>
-                <Image
-                    style={styles.coverStyle}
-                    source={{uri: path}}
-                />
+                <CacheImageComponent style={styles.coverStyle} uri={path} coverName={this.props.Name}/>
                 <View style={styles.magazineInfoContainerStyle}>
                     <Text style={styles.magazineNameTextStyle}>{this.props.Name}</Text>
                     <Text style={styles.magazineInfoTextStyle}>{this.props.TeaserInfo}</Text>
