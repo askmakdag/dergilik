@@ -15,10 +15,16 @@ class Newspapers extends Component {
 
         if (type === 'DATE') {
             json.sort(function (a, b) {
-                return a.year - b.year;
+                let parts_a = a.year.split('/');
+                let parts_b = b.year.split('/');
+
+                const date_a = new Date(parts_a[2], parts_a[1] - 1, parts_a[0]);
+                const date_b = new Date(parts_b[2], parts_b[1] - 1, parts_b[0]);
+
+                return date_a - date_b;
             });
             console.log('sorted json by DATE: ', json);
-            this.props.add_feed(json);
+            this.props.add_newspaper(json);
         }
 
         if (type === 'NAME') {
