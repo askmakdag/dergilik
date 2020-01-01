@@ -191,7 +191,6 @@ const styles = StyleSheet.create({
     },
 });
 
-
 const mapStateToProps = state => {
     return {
         magazines: state.magazinesStore.magazines,
