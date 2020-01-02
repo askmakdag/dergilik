@@ -21,7 +21,7 @@ import PrivacyPolicy from './Authentication/PrivacyPolicy';
 import Magazines from './src/Magazines/Magazines';
 import Newspapers from './src/Newspapers/Newspapers';
 import Settings from './src/Settings/Settings';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import generalSettings from './src/generalSettings';
 
 const HomeStack = createStackNavigator({
@@ -124,7 +124,7 @@ const MainTabs = createBottomTabNavigator({
         navigationOptions: {
             headerBackTitle: 'Geri',
             tabBarIcon: () => (
-                <Icon name="book" size={30} color={generalSettings.buttonColor}/>
+                <Icon name="book-open" size={30} color={generalSettings.buttonColor}/>
             ),
         },
     },
