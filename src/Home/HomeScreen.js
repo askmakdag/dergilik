@@ -5,7 +5,15 @@ import {connect} from 'react-redux';
 import axios from 'axios';
 import {add_feed, add_magazine, add_newspaper} from '../Store/Actions/index';
 
+
 class HomeScreen extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            sorted_feed: [],
+        };
+    }
 
     static navigationOptions = {
         title: 'Ana Sayfa',
@@ -37,6 +45,17 @@ class HomeScreen extends Component {
         }
     };
 
+    filterBy = (value) => {
+        let json = this.props.feed;
+        const result = json.filter(word => word.name.indexOf(value) >= 0);
+        if (result.length === 0) {
+            /** Aranan bulunamaz ise hepsini listele.*/
+        } else {
+            /** Aranan bulunur ise arananı listele.*/
+            this.setState({sorted_feed: this.arrangeFeed(result)});
+        }
+    };
+
     async componentWillMount() {
         await axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
@@ -48,19 +67,39 @@ class HomeScreen extends Component {
                     this.props.add_feed(response.data.Items);
                     this.props.add_magazine(feed_magazine);
                     this.props.add_newspaper(feed_newspaper);
-
                 },
             )
             .catch(function (error) {
                 console.log('Get API Hatası: ', error);
             });
+        this.setState({sorted_feed: this.arrangeFeed(this.props.feed)});
+    }
+
+    arrangeFeed = (feed) => {
+        const items = [];
+        for (let i = 0; i < feed.length; i++) {
+            if (i % 2 === 0) {
+                if (typeof feed[i + 1] !== 'undefined') {
+                    items.push([feed[i], feed[i + 1]]);
+                } else {
+                    items.push([feed[i]]);
+                }
+            }
+        }
+
+        return items;
+    };
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({sorted_feed: this.arrangeFeed(nextProps.feed)});
     }
 
     render() {
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <MagazinFrameContainer Type={'MIX'}
-                                       Data={this.props.sorted_feed}
+                                       Data={this.state.sorted_feed}
+                                       filterBy={(value) => this.filterBy(value)}
                                        sortBy={(type) => this.sortBy(type)}/>
             </View>
         );
@@ -69,7 +108,6 @@ class HomeScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-        sorted_feed: state.magazinesStore.sorted_feed,
         feed: state.magazinesStore.feed,
     };
 };

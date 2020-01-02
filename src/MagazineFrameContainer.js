@@ -14,7 +14,6 @@ class MagazineFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
-            magazinesX: [],
         };
     }
 
@@ -23,20 +22,16 @@ class MagazineFrameContainer extends Component {
             key: value,
         });
 
-        let json = this.state.magazinesX;
-        const result = json.filter(word => word.name.indexOf(value) >= 0);
-        if (result.length === 0) {
-            /** Aranan bulunamaz ise hepsini listele.*/
-            //this.setState({magazines: this.state.magazinesX});
-        } else {
-            /** Aranan bulunur ise arananı listele.*/
-            //this.setState({magazines: result});
-        }
+        this.filterBy(value);
     }
 
     sortBy = (type) => {
         this.props.sortBy(type);
         this.handleVisibilityModal();
+    };
+
+    filterBy = (value) => {
+        this.props.filterBy(value);
     };
 
     handleVisibilityModal = () => {
@@ -219,7 +214,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-    return {};
+    return {
+        feed: state.magazinesStore.feed,
+    };
 };
 
 const mapDispatchToProps = dispatch => {
