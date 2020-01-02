@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, View, Platform, Text} from 'react-native';
+import {StyleSheet, Dimensions, View, Platform, Text, TouchableOpacity} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
@@ -15,9 +15,11 @@ const s3 = new AWS.S3({
 
 import SQLite from 'react-native-sqlite-2';
 import RNFetchBlob from 'rn-fetch-blob';
+import CacheImageComponent from './Components/CacheImageComponent';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 let Spinner = require('react-native-spinkit');
+import {Button} from 'react-native-elements';
 
 class MagazineComponent extends Component {
 
@@ -25,6 +27,8 @@ class MagazineComponent extends Component {
         super(props);
         this.state = {
             magazine_path: {},
+            cover_path: this.getUrl(),
+            visible: false,
         };
     };
 
@@ -57,7 +61,7 @@ class MagazineComponent extends Component {
             });
     };
 
-    asd = () => {
+    loadSpinner = () => {
         const types = ['CircleFlip', 'Bounce', 'Wave', 'WanderingCubes', 'Pulse', 'ChasingDots', 'ThreeBounce',
             'Circle', '9CubeGrid', 'WordPress', 'FadingCircle', 'FadingCircleAlt', 'Arc', 'ArcAlt'];
 
@@ -70,22 +74,52 @@ class MagazineComponent extends Component {
         </View>;
     };
 
+    getUrl() {
+        console.log('this.props.navigation.state.params.name: ', this.props.navigation.state.params.name);
+
+        const params = {
+            Bucket: aws_credentials.s3Bucket,
+            Key: 'uploads/' + this.props.navigation.state.params.name + ' Cover.png',
+        };
+        return s3.getSignedUrl('getObject', params);
+    }
+
     render() {
-        console.log('path:: ', this.state.magazine_path);
-        return <View style={styles.pdfContainerStyle}>
-            <Pdf
-                horizontal={true}
-                fitPolicy={2}
-                enablePaging={true}
-                source={this.state.magazine_path}
-                style={styles.pdfStyle}
-                activityIndicator={this.asd()}
-            />
+        const {cover_path, visible} = this.state;
+        console.log('cover_path: ', cover_path);
+
+        return <View style={styles.mainContainer}>
+
+            <View display={visible ? 'none' : 'flex'} style={styles.teaserContainerStyle}>
+                <View style={styles.coverImageContainer}>
+                    <CacheImageComponent style={styles.coverStyle} uri={cover_path}
+                                         coverName={this.props.navigation.state.params.name}/>
+
+                    <Button title={'OKU'} buttonStyle={styles.readButtonStyle}
+                            onPress={() => this.setState({visible: true})}/>
+                </View>
+            </View>
+
+            <View style={styles.pdfContainerStyle} display={visible ? 'flex' : 'none'}>
+                <Pdf
+                    horizontal={true}
+                    fitPolicy={2}
+                    enablePaging={true}
+                    source={this.state.magazine_path}
+                    style={styles.pdfStyle}
+                    activityIndicator={this.loadSpinner()}
+                />
+            </View>
         </View>;
     }
 }
 
 const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        height: Dimensions.get('window').height,
+    },
     pdfStyle: {
         flex: 1,
         height: Dimensions.get('window').height,
@@ -94,9 +128,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     pdfContainerStyle: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
     },
     spinnerStyle: {
         marginVertical: 25,
@@ -116,6 +149,41 @@ const styles = StyleSheet.create({
         marginVertical: 40,
         color: '#AEB6BF',
         fontFamily: 'HelveticaNeue-MediumItalic',
+    },
+    teaserContainerStyle: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+        //marginTop: Dimensions.get('window').height * 0.15,
+        backgroundColor: '#123456',
+    },
+    teaserMainContainerStyle: {
+        flexDirection: 'column',
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width,
+        backgroundColor: '#123456',
+    },
+    coverStyle: {
+        height: Dimensions.get('window').width,
+        width: Dimensions.get('window').width * 0.75,
+        resizeMode: 'cover',
+        borderRadius: 10,
+        marginTop: Dimensions.get('window').height * 0.1,
+    },
+    coverImageContainer: {
+        height: Dimensions.get('window').height * 0.5,
+        width: Dimensions.get('window').width,
+        marginVertical: '5%',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    readButtonStyle: {
+        width: Dimensions.get('window').width * 0.75,
+        height: 50,
+        borderRadius: 5,
+        backgroundColor: '#0497EC',
+        marginTop: 50,
     },
 });
 
