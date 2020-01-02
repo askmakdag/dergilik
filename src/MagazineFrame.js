@@ -32,13 +32,12 @@ class MagazineFrame extends Component {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.Name + ' Cover.png',
         };
-        const url = s3.getSignedUrl('getObject', params);
-        console.log('generated url: ', url);
-        return url;
+        return s3.getSignedUrl('getObject', params);
     }
 
     navigateToMagazine = () => {
-        this.props.navigation.navigate('MagazineComponent', {name: this.props.Name, from: this.props.From});
+        const {navigation, From, Name} = this.props;
+        navigation.navigate('MagazineComponent', {name: Name, from: From});
     };
 
     componentWillMount = async () => {
@@ -97,30 +96,6 @@ class MagazineFrame extends Component {
             .catch((errorMessage, statusCode) => {
             });
     };
-
-    fetchPdf = () => {
-        const params = {
-            Bucket: aws_credentials.s3Bucket,
-            Key: 'uploads/' + this.props.Name + '.pdf',
-        };
-        const url = s3.getSignedUrl('getObject', params);
-
-        RNFetchBlob
-            .config({
-                // add this option that makes response data to be stored as a file,
-                // this is much more performant.
-                fileCache: true,
-            })
-            .fetch('GET', url, {
-                //some headers ..
-            })
-            .then((res) => {
-                // the temp file path
-                console.log('The file saved to ', res.path());
-                this.setState({magazine_path: res.path()});
-            });
-    };
-
 
     render() {
         const {path} = this.state;

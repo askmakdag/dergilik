@@ -11,6 +11,7 @@ class CacheImageComponent extends React.Component {
 
     loadFile = (path) => {
         console.log(' bulundu loadFile');
+
         this.setState({source: {uri: path}});
     };
 
@@ -22,9 +23,6 @@ class CacheImageComponent extends React.Component {
 
     componentDidMount() {
         const {uri, coverName} = this.props;
-        const name = shorthash.unique(uri);
-        const extension = (Platform.OS === 'android') ? 'file://' : '';
-        const path = `${extension}${RNFS.CachesDirectoryPath}/${name}.png`;
 
         /** Yayın ismine göre path oluşturuyoruz. */
         const cName = shorthash.unique(coverName);
@@ -36,6 +34,26 @@ class CacheImageComponent extends React.Component {
                 this.loadFile(cPath);
             } else {
                 this.downloadFile(uri, cPath);
+            }
+        });
+    }
+
+    /** Updadte edilmesi gereken fotoğraflar burada tespid edilir.
+     * Tespit edilen componentler istenilen şekilde 'düzgün veriler ile' tekrar render edilir.*/
+    componentWillReceiveProps(nextProps) {
+        //console.log('nextProps.coverName: ', nextProps.coverName);
+        //console.log('thisProps.coverName: ', this.props.coverName + '\n');
+
+        /** Yayın ismine göre path oluşturuyoruz. */
+        const cName = shorthash.unique(nextProps.coverName);
+        const cExtension = (Platform.OS === 'android') ? 'file://' : '';
+        const cPath = `${cExtension}${RNFS.CachesDirectoryPath}/${cName}.png`;
+
+        RNFS.exists(cPath).then(exists => {
+            if (exists) {
+                this.loadFile(cPath);
+            } else {
+                this.downloadFile(nextProps.uri, cPath);
             }
         });
     }
