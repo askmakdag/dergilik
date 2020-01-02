@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, View, Platform, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Dimensions, View, Platform, Text} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.75,
         height: 50,
         borderRadius: 5,
-        backgroundColor: '#0497EC',
+        backgroundColor: '#FF5733',
         marginTop: 50,
     },
 });

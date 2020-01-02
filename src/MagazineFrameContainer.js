@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList, TextInput, Dimensions} from 'react-native';
+import {View, Text, Image, StyleSheet, TouchableOpacity, FlatList, TextInput, Dimensions} from 'react-native';
 import MagazinFrame from './MagazineFrame';
 import {add_feed, add_magazine, add_newspaper} from './Store/Actions/index';
 import {connect} from 'react-redux';
+import Modal from 'react-native-modal';
 
 const backgroundColor = '#dcddde';
 
@@ -59,7 +60,7 @@ class MagazineFrameContainer extends Component {
 
                     <TouchableOpacity onPress={() => this.handleVisibilityModal()}>
                         <Image
-                            source={require('../assets/sort.png')}
+                            source={require('../assets/sort-blue.png')}
                             style={{
                                 width: Dimensions.get('window').width * 0.06,
                                 height: Dimensions.get('window').width * 0.06,
@@ -71,6 +72,7 @@ class MagazineFrameContainer extends Component {
 
                 <Modal animationType="slide"
                        transparent={true}
+                       onBackdropPress={() => this.setState({modalVisible: false})}
                        visible={this.state.modalVisible}
                 >
                     <View style={styles.modalView}>
@@ -168,14 +170,15 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     modalView: {
-        backgroundColor: '#999E9E',
-        width: Dimensions.get('window').width * 0.96,
+        backgroundColor: '#123456',
+        width: Dimensions.get('window').width * 0.9,
         alignSelf: 'center',
         position: 'absolute',
-        bottom: 15,
-        borderRadius: 15,
+        bottom: 20,
+        borderRadius: 5,
         flexDirection: 'column',
         alignItems: 'center',
+        paddingVertical: 15,
     },
     cancelTextStyle: {
         color: '#F71A1A',
@@ -187,13 +190,11 @@ const styles = StyleSheet.create({
     },
     cancelContainerStyle: {
         backgroundColor: '#fff',
-        width: '97%',
-        borderRadius: 15,
-        marginTop: 10,
-        marginBottom: 10,
+        width: '85%',
+        marginVertical: 10,
     },
     unfollowTextStyle: {
-        color: '#149CFB',
+        color: '#1f2020',
         fontWeight: '400',
         fontSize: 18,
         height: 40,
@@ -205,8 +206,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: '#A7A9AD',
         backgroundColor: '#fff',
-        width: '97%',
-        borderRadius: 15,
+        width: '85%',
         marginTop: 10,
     },
     renderItemContainerStyle: {
