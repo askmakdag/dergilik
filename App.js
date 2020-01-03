@@ -109,13 +109,14 @@ const SavedStack = createStackNavigator({
     },
 });
 
+const tabSize = 29;
 const MainTabs = createBottomTabNavigator({
     Home: {
         screen: HomeStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarIcon: () => (
-                <Icon name="home" size={30} color={generalSettings.buttonColor}/>
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="home" size={tabSize} color={tintColor}/>
             ),
         },
     },
@@ -123,8 +124,8 @@ const MainTabs = createBottomTabNavigator({
         screen: MagazinesdStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarIcon: () => (
-                <Icon name="book-open" size={30} color={generalSettings.buttonColor}/>
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="book-open" size={tabSize} color={tintColor}/>
             ),
         },
     },
@@ -132,8 +133,8 @@ const MainTabs = createBottomTabNavigator({
         screen: NewspapersStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarIcon: () => (
-                <Icon name="newspaper" size={30} color={generalSettings.buttonColor}/>
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="newspaper" size={tabSize} color={tintColor}/>
             ),
         },
     },
@@ -141,13 +142,16 @@ const MainTabs = createBottomTabNavigator({
         screen: SavedStack,
         navigationOptions: {
             headerBackTitle: 'Geri',
-            tabBarIcon: () => (
-                <Icon name="download" size={30} color={generalSettings.buttonColor}/>
+            tabBarIcon: ({tintColor}) => (
+                <Icon name="arrow-circle-down" size={tabSize} color={tintColor}/>
             ),
         },
     },
 }, {
-    tabBarOptions: {showLabel: false},
+    tabBarOptions: {
+        activeTintColor: '#292929',
+        inactiveTintColor: 'grey',
+    },
 });
 
 let Navigation = createAppContainer(
