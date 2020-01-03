@@ -89,12 +89,11 @@ class MagazineComponent extends Component {
         console.log('cover_path: ', cover_path);
 
         return <View style={styles.mainContainer}>
-
             <View display={visible ? 'none' : 'flex'} style={styles.teaserContainerStyle}>
                 <View style={styles.coverImageContainer}>
                     <CacheImageComponent style={styles.coverStyle} uri={cover_path}
                                          coverName={this.props.navigation.state.params.name}/>
-
+                    <Text style={styles.sizeTextStyle}>{this.props.navigation.state.params.sizeMB} MB</Text>
                     <Button title={'OKU'} buttonStyle={styles.readButtonStyle}
                             onPress={() => this.setState({visible: true})}/>
                 </View>
@@ -183,7 +182,13 @@ const styles = StyleSheet.create({
         height: 50,
         borderRadius: 5,
         backgroundColor: '#FF5733',
-        marginTop: 50,
+        marginTop: 40,
+    },
+    sizeTextStyle: {
+        fontSize: 17,
+        fontWeight: '600',
+        color: '#a8a9aa',
+        marginTop: 10,
     },
 });
 

@@ -36,8 +36,8 @@ class MagazineFrame extends Component {
     }
 
     navigateToMagazine = () => {
-        const {navigation, From, Name} = this.props;
-        navigation.navigate('MagazineComponent', {name: Name, from: From});
+        const {navigation, From, Name, sizeMB} = this.props;
+        navigation.navigate('MagazineComponent', {name: Name, from: From, sizeMB: sizeMB});
     };
 
     componentWillMount = async () => {
