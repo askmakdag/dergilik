@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#123456',
     },
     coverStyle: {
-        height: Dimensions.get('window').width,
-        width: Dimensions.get('window').width * 0.75,
+        height: Dimensions.get('window').width * 0.9,
+        width: Dimensions.get('window').width * 0.65,
         resizeMode: 'cover',
         borderRadius: 10,
         marginTop: Dimensions.get('window').height * 0.1,

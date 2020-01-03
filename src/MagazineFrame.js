@@ -106,7 +106,7 @@ class MagazineFrame extends Component {
                 <CacheImageComponent style={styles.coverStyle} uri={path} coverName={this.props.Name}/>
                 <View style={styles.magazineInfoContainerStyle}>
                     <Text style={styles.magazineNameTextStyle}>{this.props.Name}</Text>
-                    <Text style={styles.magazineInfoTextStyle}>{this.props.TeaserInfo}</Text>
+                    <Text style={styles.magazineInfoTextStyle} multiline={true}>{this.props.TeaserInfo}</Text>
 
                     <View style={styles.bottomInfoContainerStyle}>
                         <Text style={styles.bottomInfoTextStyle}>{this.props.Year}</Text>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         marginTop: 5,
         marginBottom: 3,
-        width: Dimensions.get('window').width * 0.9,
+        width: Dimensions.get('window').width * 0.42,
         marginHorizontal: 10,
     },
     magazineInfoTextStyle: {
