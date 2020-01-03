@@ -35,7 +35,7 @@ class Magazines extends Component {
                 return date_a - date_b;
             });
             console.log('sorted json by DATE: ', json);
-            this.props.add_magazine(json);
+            this.setState({sorted_magazines: this.arrangeMagazines(json)});
         }
 
         if (type === 'NAME') {
@@ -43,7 +43,7 @@ class Magazines extends Component {
                 return ('' + a.name).localeCompare(b.name);
             });
             console.log('sorted json by NAME: ', json);
-            this.props.add_magazine(json);
+            this.setState({sorted_magazines: this.arrangeMagazines(json)});
         }
     };
 

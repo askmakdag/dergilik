@@ -33,7 +33,7 @@ class HomeScreen extends Component {
                 return date_a - date_b;
             });
             console.log('sorted json by DATE: ', json);
-            this.props.add_feed(json);
+            this.setState({sorted_feed: this.arrangeFeed(json)});
         }
 
         if (type === 'NAME') {
@@ -41,7 +41,7 @@ class HomeScreen extends Component {
                 return ('' + a.name).localeCompare(b.name);
             });
             console.log('sorted json by NAME: ', json);
-            this.props.add_feed(json);
+            this.setState({sorted_feed: this.arrangeFeed(json)});
         }
     };
 

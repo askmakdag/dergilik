@@ -149,6 +149,7 @@ const MainTabs = createBottomTabNavigator({
     },
 }, {
     tabBarOptions: {
+        showLabel: false,
         activeTintColor: generalSettings.buttonColor,
         inactiveTintColor: 'grey',
     },
