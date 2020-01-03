@@ -178,8 +178,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     readButtonStyle: {
-        width: Dimensions.get('window').width * 0.75,
-        height: 50,
+        width: Dimensions.get('window').width * 0.7,
+        height: 45,
         borderRadius: 5,
         backgroundColor: '#FF5733',
         marginTop: 40,
