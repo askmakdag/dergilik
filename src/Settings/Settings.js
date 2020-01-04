@@ -8,7 +8,9 @@ class Settings extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            switchValue: true,
+        };
     };
 
     SignOut = async () => {
@@ -18,7 +20,7 @@ class Settings extends React.Component {
 
     render() {
         const iconColor = generalSettings.buttonColor;
-
+        const {switchValue} = this.state;
         return (
             <ScrollView contentContainerStyle={styles.scrollViewContainer}>
 
@@ -114,7 +116,8 @@ class Settings extends React.Component {
 
                     <View style={styles.itemContainerStyle}>
                         <Text style={styles.itemText}>Tüm Bildirimleri Kapat</Text>
-                        <Switch style={{}} value={true}/>
+                        <Switch onValueChange={() => this.setState({switchValue: !switchValue})}
+                                value={switchValue}/>
                     </View>
                 </View>
 

@@ -36,8 +36,22 @@ class MagazineFrame extends Component {
     }
 
     navigateToMagazine = () => {
-        const {navigation, From, Name, sizeMB} = this.props;
-        navigation.navigate('MagazineComponent', {name: Name, from: From, sizeMB: sizeMB});
+        const {navigation, From, Name, Type, sizeMB, ViewedCount, Year, TeaserInfo, Article} = this.props;
+
+        console.log('Name:Name: ', Name);
+
+        if (Type === 'article') {
+            navigation.navigate('ArticleComponent', {
+                name: Name,
+                from: From,
+                year: Year,
+                viewCount: ViewedCount,
+                teaserInfo: TeaserInfo,
+                article: Article,
+            });
+        } else {
+            navigation.navigate('MagazineComponent', {name: Name, from: From, sizeMB: sizeMB});
+        }
     };
 
     componentWillMount = async () => {
@@ -99,18 +113,20 @@ class MagazineFrame extends Component {
 
     render() {
         const {path} = this.state;
+        const {Name, TeaserInfo, ViewedCount, Year, Type} = this.props;
 
         return (
-            <TouchableOpacity style={styles.container} onPress={() => this.navigateToMagazine()}
+            <TouchableOpacity style={Type === 'article' ? styles.containerArticle : styles.container}
+                              onPress={() => this.navigateToMagazine()}
                               onLongPress={() => this.saveMagazine()}>
-                <CacheImageComponent style={styles.coverStyle} uri={path} coverName={this.props.Name}/>
+                <CacheImageComponent style={styles.coverStyle} uri={path} coverName={Name}/>
                 <View style={styles.magazineInfoContainerStyle}>
-                    <Text style={styles.magazineNameTextStyle}>{this.props.Name}</Text>
-                    <Text style={styles.magazineInfoTextStyle} multiline={true}>{this.props.TeaserInfo}</Text>
+                    <Text style={styles.magazineNameTextStyle}>{Name}</Text>
+                    <Text style={styles.magazineInfoTextStyle} multiline={true}>{TeaserInfo}</Text>
 
                     <View style={styles.bottomInfoContainerStyle}>
-                        <Text style={styles.bottomInfoTextStyle}>{this.props.Year}</Text>
-                        <Text style={styles.bottomInfoTextStyle}>{this.props.ViewedCount} kez okundu</Text>
+                        <Text style={styles.bottomInfoTextStyle}>{Year}</Text>
+                        <Text style={styles.bottomInfoTextStyle}>{ViewedCount} kez okundu</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -127,10 +143,16 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         marginVertical: 10,
     },
+    containerArticle: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: Dimensions.get('window').width * 1.2,
+        width: Dimensions.get('window').width * 0.47,
+        backgroundColor: '#fff',
+        marginVertical: 10,
+    },
     coverStyle: {
         flex: 1,
-        // height: Dimensions.get('window').width * 0.6,
-        // width: Dimensions.get('window').width * 0.42,
         resizeMode: 'cover',
     },
     magazineInfoContainerStyle: {

@@ -63,8 +63,9 @@ class HomeScreen extends Component {
 
                     let feed_magazine = response.data.Items.filter(item => item.type === 'magazine');
                     let feed_newspaper = response.data.Items.filter(item => item.type === 'newspaper');
+                    let feed_article = response.data.Items.filter(item => item.type === 'article');
 
-                    this.props.add_feed(response.data.Items);
+                    this.props.add_feed(feed_article);
                     this.props.add_magazine(feed_magazine);
                     this.props.add_newspaper(feed_newspaper);
                 },

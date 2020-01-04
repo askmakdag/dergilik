@@ -99,13 +99,17 @@ class MagazineFrameContainer extends Component {
                               Year={item[0].year}
                               TeaserInfo={item[0].teaser_info}
                               ViewedCount={item[0].viewed_count}
+                              Type={item[0].type}
                               sizeMB={item[0].size_mb}
+                              Article={item[0].article}
                               From={'HOME_PAGE'}/>
                 <MagazinFrame Name={item[1].name}
                               Year={item[1].year}
                               sizeMB={item[1].size_mb}
                               TeaserInfo={item[1].teaser_info}
                               ViewedCount={item[1].viewed_count}
+                              Type={item[1].type}
+                              Article={item[1].article}
                               From={'HOME_PAGE'}/>
             </View>;
         } else {
@@ -114,6 +118,8 @@ class MagazineFrameContainer extends Component {
                               Year={item[0].year}
                               TeaserInfo={item[0].teaser_info}
                               ViewedCount={item[0].viewed_count}
+                              Type={item[0].type}
+                              Article={item[0].article}
                               From={'HOME_PAGE'}/>
             </View>;
         }

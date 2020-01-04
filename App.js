@@ -23,6 +23,7 @@ import Newspapers from './src/Newspapers/Newspapers';
 import Settings from './src/Settings/Settings';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import generalSettings from './src/generalSettings';
+import ArticleComponent from './src/ArticleComponent';
 
 const HomeStack = createStackNavigator({
     Home: {
@@ -45,6 +46,12 @@ const HomeStack = createStackNavigator({
     },
     MagazineComponent: {
         screen: MagazineComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+        },
+    },
+    ArticleComponent: {
+        screen: ArticleComponent,
         navigationOptions: {
             headerBackTitle: 'Geri',
         },

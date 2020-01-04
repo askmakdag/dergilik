@@ -87,6 +87,7 @@ class MagazineComponent extends Component {
     render() {
         const {cover_path, visible} = this.state;
         console.log('cover_path: ', cover_path);
+        const test = '';
 
         return <View style={styles.mainContainer}>
             <View display={visible ? 'none' : 'flex'} style={styles.teaserContainerStyle}>
