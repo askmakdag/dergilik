@@ -103,7 +103,6 @@ class MagazineComponent extends Component {
             <View style={styles.pdfContainerStyle} display={visible ? 'flex' : 'none'}>
                 <Pdf
                     horizontal={true}
-                    fitPolicy={2}
                     enablePaging={true}
                     source={this.state.magazine_path}
                     style={styles.pdfStyle}
@@ -130,6 +129,8 @@ const styles = StyleSheet.create({
     pdfContainerStyle: {
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     spinnerStyle: {
         marginVertical: 25,
