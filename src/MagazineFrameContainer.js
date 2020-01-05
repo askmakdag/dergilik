@@ -122,6 +122,7 @@ class MagazineFrameContainer extends Component {
                               ViewedCount={item.viewed_count}
                               Type={item.type}
                               DisplayMode={DisplayMode}
+                              sizeMB={item.size_mb}
                               Article={item.article}
                               From={'HOME_PAGE'}/>
             </View>;
@@ -156,6 +157,7 @@ class MagazineFrameContainer extends Component {
                                   ViewedCount={item[0].viewed_count}
                                   Type={item[0].type}
                                   DisplayMode={DisplayMode}
+                                  sizeMB={item[0].size_mb}
                                   Article={item[0].article}
                                   From={'HOME_PAGE'}/>
                 </View>;

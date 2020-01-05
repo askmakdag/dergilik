@@ -18,6 +18,7 @@ import SQLite from 'react-native-sqlite-2';
 import CacheImageComponent from './Components/CacheImageComponent';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 class MagazineFrame extends Component {
     constructor(props) {
@@ -114,9 +115,10 @@ class MagazineFrame extends Component {
     render() {
         const {path} = this.state;
         const {Name, TeaserInfo, ViewedCount, Year, Type, DisplayMode} = this.props;
-        const containerWidth = DisplayMode === 'LIST_MODE' ? Dimensions.get('window').width * 0.88 : Dimensions.get('window').width * 0.47;
-        const containerHeight = DisplayMode === 'LIST_MODE' ? Dimensions.get('window').width * 1.5 : Dimensions.get('window').width * 0.88;
-        const containerArticleHeight = DisplayMode === 'LIST_MODE' ? (Type === 'article' ? Dimensions.get('window').width * 1.8 : Dimensions.get('window').width * 1.5) : Dimensions.get('window').width * 1.2;
+
+        const containerWidth = DisplayMode === 'LIST_MODE' ? DEVICE_WIDTH * 0.88 : DEVICE_WIDTH * 0.47;
+        const containerHeight = DisplayMode === 'LIST_MODE' ? DEVICE_WIDTH * 1.5 : DEVICE_WIDTH * 0.88;
+        const containerArticleHeight = DisplayMode === 'LIST_MODE' ? (Type === 'article' ? DEVICE_WIDTH * 1.8 : DEVICE_WIDTH * 1.5) : DEVICE_WIDTH * 1.2;
 
         return (
             <TouchableOpacity
