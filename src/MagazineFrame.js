@@ -113,12 +113,22 @@ class MagazineFrame extends Component {
 
     render() {
         const {path} = this.state;
-        const {Name, TeaserInfo, ViewedCount, Year, Type} = this.props;
+        const {Name, TeaserInfo, ViewedCount, Year, Type, DisplayMode} = this.props;
+        const containerWidth = DisplayMode === 'LIST_MODE' ? Dimensions.get('window').width * 0.88 : Dimensions.get('window').width * 0.47;
+        const containerHeight = DisplayMode === 'LIST_MODE' ? Dimensions.get('window').width * 1.5 : Dimensions.get('window').width * 0.88;
+        const containerArticleHeight = DisplayMode === 'LIST_MODE' ? (Type === 'article' ? Dimensions.get('window').width * 1.8 : Dimensions.get('window').width * 1.5) : Dimensions.get('window').width * 1.2;
 
         return (
-            <TouchableOpacity style={Type === 'article' ? styles.containerArticle : styles.container}
-                              onPress={() => this.navigateToMagazine()}
-                              onLongPress={() => this.saveMagazine()}>
+            <TouchableOpacity
+                style={Type === 'article' ? [styles.containerArticle, {
+                    width: containerWidth,
+                    height: containerArticleHeight,
+                }] : [styles.container, {
+                    width: containerWidth,
+                    height: containerHeight,
+                }]}
+                onPress={() => this.navigateToMagazine()}
+                onLongPress={() => this.saveMagazine()}>
                 <CacheImageComponent style={styles.coverStyle} uri={path} coverName={Name}/>
                 <View style={styles.magazineInfoContainerStyle}>
                     <Text style={styles.magazineNameTextStyle}>{Name}</Text>
@@ -138,16 +148,13 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         justifyContent: 'center',
-        height: Dimensions.get('window').width * 0.88,
-        width: Dimensions.get('window').width * 0.47,
+        //height: Dimensions.get('window').width * 0.88,
         backgroundColor: '#fff',
         marginVertical: 10,
     },
     containerArticle: {
         flexDirection: 'column',
         justifyContent: 'center',
-        height: Dimensions.get('window').width * 1.2,
-        width: Dimensions.get('window').width * 0.47,
         backgroundColor: '#fff',
         marginVertical: 10,
     },

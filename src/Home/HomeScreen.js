@@ -12,6 +12,7 @@ class HomeScreen extends Component {
         super(props);
         this.state = {
             sorted_feed: [],
+            displayMode: 'GALERI_MODE',
         };
     }
 
@@ -91,15 +92,24 @@ class HomeScreen extends Component {
         return items;
     };
 
+    changeDisplayMode = (mode) => {
+        console.log('mode changed to: ', mode);
+        this.setState({displayMode: mode});
+    };
+
     componentWillReceiveProps(nextProps) {
         this.setState({sorted_feed: this.arrangeFeed(nextProps.feed)});
     }
 
     render() {
+        const {displayMode} = this.state;
+
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <MagazinFrameContainer Type={'MIX'}
-                                       Data={this.state.sorted_feed}
+                                       Data={displayMode === 'LIST_MODE' ? this.props.feed : this.state.sorted_feed}
+                                       DisplayMode={displayMode}
+                                       changeMode={(mode) => this.changeDisplayMode(mode)}
                                        filterBy={(value) => this.filterBy(value)}
                                        sortBy={(type) => this.sortBy(type)}/>
             </View>

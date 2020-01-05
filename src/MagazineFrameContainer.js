@@ -14,6 +14,7 @@ class MagazineFrameContainer extends Component {
         this.state = {
             search_text: '',
             modalVisible: false,
+            displayMode: this.props.DisplayMode,
         };
     }
 
@@ -34,12 +35,17 @@ class MagazineFrameContainer extends Component {
         this.props.filterBy(value);
     };
 
+    changeMode = (mode) => {
+        this.props.changeMode(mode);
+        this.handleVisibilityModal();
+    };
+
     handleVisibilityModal = () => {
         this.state.modalVisible ? this.setState({modalVisible: false}) : this.setState({modalVisible: true});
     };
 
     renderHeader = () => {
-        const {Type} = this.props;
+        const {Type, DisplayMode} = this.props;
 
         return (
             <View style={styles.mainContainer}>
@@ -82,6 +88,20 @@ class MagazineFrameContainer extends Component {
                             <Text style={styles.unfollowTextStyle}>İsme göre sırala</Text>
                         </TouchableOpacity>
 
+                        <View display={DisplayMode === 'LIST_MODE' ? 'none' : 'flex'}
+                              style={styles.unfollowContainerStyle}>
+                            <TouchableOpacity onPress={() => this.changeMode('LIST_MODE')}>
+                                <Text style={styles.unfollowTextStyle}>Liste Modu</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View display={DisplayMode === 'GALERI_MODE' ? 'none' : 'flex'}
+                              style={styles.unfollowContainerStyle}>
+                            <TouchableOpacity onPress={() => this.changeMode('GALERI_MODE')}>
+                                <Text style={styles.unfollowTextStyle}>Galeri Modu</Text>
+                            </TouchableOpacity>
+                        </View>
+
                         <TouchableOpacity onPress={() => this.handleVisibilityModal()}
                                           style={styles.cancelContainerStyle}>
                             <Text style={styles.cancelTextStyle}>Vazgeç</Text>
@@ -93,46 +113,67 @@ class MagazineFrameContainer extends Component {
     };
 
     renderItem = (item) => {
-        if (item.length === 2) {
-            return <View style={styles.renderItemContainerStyle}>
-                <MagazinFrame Name={item[0].name}
-                              Year={item[0].year}
-                              TeaserInfo={item[0].teaser_info}
-                              ViewedCount={item[0].viewed_count}
-                              Type={item[0].type}
-                              sizeMB={item[0].size_mb}
-                              Article={item[0].article}
-                              From={'HOME_PAGE'}/>
-                <MagazinFrame Name={item[1].name}
-                              Year={item[1].year}
-                              sizeMB={item[1].size_mb}
-                              TeaserInfo={item[1].teaser_info}
-                              ViewedCount={item[1].viewed_count}
-                              Type={item[1].type}
-                              Article={item[1].article}
+        const {DisplayMode} = this.props;
+        if (DisplayMode === 'LIST_MODE') {
+            return <View style={{marginHorizontal: Dimensions.get('window').width * 0.06}}>
+                <MagazinFrame Name={item.name}
+                              Year={item.year}
+                              TeaserInfo={item.teaser_info}
+                              ViewedCount={item.viewed_count}
+                              Type={item.type}
+                              DisplayMode={DisplayMode}
+                              Article={item.article}
                               From={'HOME_PAGE'}/>
             </View>;
         } else {
-            return <View style={{marginHorizontal: Dimensions.get('window').width * 0.02}}>
-                <MagazinFrame Name={item[0].name}
-                              Year={item[0].year}
-                              TeaserInfo={item[0].teaser_info}
-                              ViewedCount={item[0].viewed_count}
-                              Type={item[0].type}
-                              Article={item[0].article}
-                              From={'HOME_PAGE'}/>
-            </View>;
+            if (item.length === 2) {
+                return <View style={styles.renderItemContainerStyle}>
+                    <MagazinFrame Name={item[0].name}
+                                  Year={item[0].year}
+                                  TeaserInfo={item[0].teaser_info}
+                                  ViewedCount={item[0].viewed_count}
+                                  Type={item[0].type}
+                                  DisplayMode={DisplayMode}
+                                  sizeMB={item[0].size_mb}
+                                  Article={item[0].article}
+                                  From={'HOME_PAGE'}/>
+
+                    <MagazinFrame Name={item[1].name}
+                                  Year={item[1].year}
+                                  sizeMB={item[1].size_mb}
+                                  TeaserInfo={item[1].teaser_info}
+                                  ViewedCount={item[1].viewed_count}
+                                  Type={item[1].type}
+                                  DisplayMode={DisplayMode}
+                                  Article={item[1].article}
+                                  From={'HOME_PAGE'}/>
+                </View>;
+            } else {
+                return <View style={{marginHorizontal: Dimensions.get('window').width * 0.02}}>
+                    <MagazinFrame Name={item[0].name}
+                                  Year={item[0].year}
+                                  TeaserInfo={item[0].teaser_info}
+                                  ViewedCount={item[0].viewed_count}
+                                  Type={item[0].type}
+                                  DisplayMode={DisplayMode}
+                                  Article={item[0].article}
+                                  From={'HOME_PAGE'}/>
+                </View>;
+            }
         }
     };
 
     render() {
         const {Data} = this.props;
+        const {DisplayMode} = this.props;
+        console.log('Data : ', Data);
+        console.log('displayMode : ', DisplayMode);
 
         return (
             <FlatList
                 data={Data}
                 renderItem={({item}) => this.renderItem(item)}
-                keyExtractor={item => item[0].magazinId}
+                keyExtractor={item => DisplayMode === 'LIST_MODE' ? item.magazinId : item[0].magazinId}
                 refreshing={this.state.refreshing}
                 ListHeaderComponent={this.renderHeader}
                 showsVerticalScrollIndicator={false}
@@ -146,6 +187,7 @@ class MagazineFrameContainer extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flexDirection: 'column',
+        justifyContent: 'center',
         width: Dimensions.get('window').width,
         marginTop: 8,
     },

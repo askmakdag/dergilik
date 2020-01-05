@@ -10,6 +10,7 @@ class Newspapers extends Component {
         super(props);
         this.state = {
             sorted_newspapers: [],
+            displayMode: 'GALERI_MODE',
         };
     }
 
@@ -77,11 +78,20 @@ class Newspapers extends Component {
         this.setState({sorted_newspapers: this.arrangeNewspapers(nextProps.newspapers)});
     }
 
+    changeDisplayMode = (mode) => {
+        console.log('mode changed to: ', mode);
+        this.setState({displayMode: mode});
+    };
+
     render() {
+        const {displayMode} = this.state;
+
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <MagazinFrameContainer Type={'NEWSPAPER'}
-                                       Data={this.state.sorted_newspapers}
+                                       Data={displayMode === 'LIST_MODE' ? this.props.newspapers : this.state.sorted_newspapers}
+                                       DisplayMode={displayMode}
+                                       changeMode={(mode) => this.changeDisplayMode(mode)}
                                        filterBy={(value) => this.filterBy(value)}
                                        sortBy={(type) => this.sortBy(type)}/>
             </View>
