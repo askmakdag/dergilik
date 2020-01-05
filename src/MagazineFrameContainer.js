@@ -90,14 +90,14 @@ class MagazineFrameContainer extends Component {
 
                         <View display={DisplayMode === 'LIST_MODE' ? 'none' : 'flex'}
                               style={styles.unfollowContainerStyle}>
-                            <TouchableOpacity onPress={() => this.changeMode('LIST_MODE')}>
+                            <TouchableOpacity style={{width: '100%'}} onPress={() => this.changeMode('LIST_MODE')}>
                                 <Text style={styles.unfollowTextStyle}>Liste Modu</Text>
                             </TouchableOpacity>
                         </View>
 
                         <View display={DisplayMode === 'GALERI_MODE' ? 'none' : 'flex'}
                               style={styles.unfollowContainerStyle}>
-                            <TouchableOpacity onPress={() => this.changeMode('GALERI_MODE')}>
+                            <TouchableOpacity  style={{width: '100%'}} onPress={() => this.changeMode('GALERI_MODE')}>
                                 <Text style={styles.unfollowTextStyle}>Galeri Modu</Text>
                             </TouchableOpacity>
                         </View>
@@ -168,8 +168,8 @@ class MagazineFrameContainer extends Component {
     render() {
         const {Data} = this.props;
         const {DisplayMode} = this.props;
-        console.log('Data : ', Data);
-        console.log('displayMode : ', DisplayMode);
+        //console.log('Data : ', Data);
+        //console.log('displayMode : ', DisplayMode);
 
         return (
             <FlatList
