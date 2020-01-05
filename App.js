@@ -25,35 +25,88 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import generalSettings from './src/generalSettings';
 import ArticleComponent from './src/ArticleComponent';
 
+const headerBackgroundColor = '#123456';
+const headerTitleColor = '#fff';
+
 const HomeStack = createStackNavigator({
     Home: {
         screen: HomeScreen,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     MagazineFrameContainer: {
         screen: MagazineFrameContainer,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     MagazineFrame: {
         screen: MagazineFrame,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     MagazineComponent: {
         screen: MagazineComponent,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     ArticleComponent: {
         screen: ArticleComponent,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 });
@@ -63,24 +116,64 @@ const AuthStack = createStackNavigator({
         screen: SignIn,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     SignUp: {
         screen: SignUp,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     ConfirmSignIn: {
         screen: ConfirmSignIn,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     PrivacyPolicy: {
         screen: PrivacyPolicy,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 });
@@ -90,6 +183,16 @@ const MagazinesdStack = createStackNavigator({
         screen: Magazines,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 });
@@ -98,6 +201,16 @@ const NewspapersStack = createStackNavigator({
         screen: Newspapers,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 });
@@ -106,12 +219,32 @@ const SavedStack = createStackNavigator({
         screen: Saved,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     Settings: {
         screen: Settings,
         navigationOptions: {
             headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 });
@@ -121,37 +254,64 @@ const MainTabs = createBottomTabNavigator({
     Home: {
         screen: HomeStack,
         navigationOptions: {
-            headerBackTitle: 'Geri',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="home" size={tabSize} color={tintColor}/>
             ),
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     Magazines: {
         screen: MagazinesdStack,
         navigationOptions: {
-            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
             tabBarIcon: ({tintColor}) => (
                 <Icon name="book-open" size={tabSize} color={tintColor}/>
             ),
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     NewsPapers: {
         screen: NewspapersStack,
         navigationOptions: {
-            headerBackTitle: 'Geri',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="newspaper" size={tabSize} color={tintColor}/>
             ),
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
     Saved: {
         screen: SavedStack,
         navigationOptions: {
-            headerBackTitle: 'Geri',
             tabBarIcon: ({tintColor}) => (
                 <Icon name="arrow-circle-down" size={tabSize} color={tintColor}/>
             ),
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
         },
     },
 }, {

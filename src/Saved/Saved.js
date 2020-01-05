@@ -25,7 +25,7 @@ class Saved extends Component {
                     name='settings'
                     onPress={() => navigation.navigate('Settings')}
                     containerStyle={{marginHorizontal: 10}}
-                    color={generalSettings.buttonColor}
+                    color={'#fff'}
                 />
             ),
         };
