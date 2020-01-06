@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch, Alert, Button} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, ScrollView, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import generalSettings from '../generalSettings';
 import {Auth} from 'aws-amplify';

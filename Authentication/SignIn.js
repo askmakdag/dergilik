@@ -32,6 +32,12 @@ class SignIn extends Component {
         };
     };
 
+    static navigationOptions = () => {
+        return {
+            headerTitle: 'Giriş Yap',
+        };
+    };
+
     onChangeText = (key, value) => {
         this.setState({
             [key]: value,
@@ -61,14 +67,12 @@ class SignIn extends Component {
             }
 
         } catch (err) {
-            console.log('error signing up: ', err);
+            //console.log('error signing up: ', err);
             Alert.alert('Kullanıcı bulunamadı!');
         }
     };
 
     handleVisibilityModal = (element) => {
-        console.log('element: ', element);
-
         this.state.modalVisible ? this.setState({modalVisible: false, country: element}) :
             this.setState({modalVisible: true, country: element});
     };
@@ -82,13 +86,11 @@ class SignIn extends Component {
                                        handleAction={() => this.handleVisibilityModal(element)}/>);
         });
 
-        console.log('before select...');
         /** Kullanıcının numarası kayıtlı ise hatırla.*/
         db2.transaction((tx) => {
             tx.executeSql('CREATE TABLE IF NOT EXISTS user(user_id INTEGER PRIMARY KEY NOT NULL, number VARCHAR(30))', []);
             tx.executeSql('SELECT * FROM user', [], (tx, results) => {
-                console.log('select...');
-                console.log('item:', results.rows.item(0));
+                //console.log('item:', results.rows.item(0));
                 if (results.rows.item(0)) {
                     this.setState({cell_phone: results.rows.item(0).number});
                 }

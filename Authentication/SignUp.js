@@ -33,6 +33,12 @@ class SignUp extends Component {
         };
     };
 
+    static navigationOptions = () => {
+        return {
+            headerTitle: 'Kayıt ol',
+        };
+    };
+
     onChangeText = (key, value) => {
         this.setState({
             [key]: value,

@@ -20,6 +20,12 @@ class ConfirmSignIn extends Component {
         };
     };
 
+    static navigationOptions = () => {
+        return {
+            headerTitle: 'Girişi Tamamla',
+        };
+    };
+
     onChangeText = (key, value) => {
         this.setState({
             [key]: value,
