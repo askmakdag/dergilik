@@ -13,6 +13,12 @@ class Settings extends React.Component {
         };
     };
 
+    static navigationOptions = () => {
+        return {
+            headerTitle: 'Ayarlar',
+        };
+    };
+
     SignOut = async () => {
         await Auth.signOut();
         this.props.navigation.navigate('SignIn');
