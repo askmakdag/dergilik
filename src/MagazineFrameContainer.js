@@ -97,7 +97,7 @@ class MagazineFrameContainer extends Component {
 
                         <View display={DisplayMode === 'GALERI_MODE' ? 'none' : 'flex'}
                               style={styles.unfollowContainerStyle}>
-                            <TouchableOpacity  style={{width: '100%'}} onPress={() => this.changeMode('GALERI_MODE')}>
+                            <TouchableOpacity style={{width: '100%'}} onPress={() => this.changeMode('GALERI_MODE')}>
                                 <Text style={styles.unfollowTextStyle}>Galeri Modu</Text>
                             </TouchableOpacity>
                         </View>
@@ -113,7 +113,7 @@ class MagazineFrameContainer extends Component {
     };
 
     renderItem = (item) => {
-        const {DisplayMode} = this.props;
+        const {DisplayMode, From} = this.props;
         if (DisplayMode === 'LIST_MODE') {
             return <View style={{marginHorizontal: Dimensions.get('window').width * 0.06}}>
                 <MagazinFrame Name={item.name}
@@ -124,7 +124,8 @@ class MagazineFrameContainer extends Component {
                               DisplayMode={DisplayMode}
                               sizeMB={item.size_mb}
                               Article={item.article}
-                              From={'HOME_PAGE'}/>
+                              DataURL={item.data_url}
+                              From={From}/>
             </View>;
         } else {
             if (item.length === 2) {
@@ -137,7 +138,8 @@ class MagazineFrameContainer extends Component {
                                   DisplayMode={DisplayMode}
                                   sizeMB={item[0].size_mb}
                                   Article={item[0].article}
-                                  From={'HOME_PAGE'}/>
+                                  DataURL={item[0].data_url}
+                                  From={From}/>
 
                     <MagazinFrame Name={item[1].name}
                                   Year={item[1].year}
@@ -147,7 +149,8 @@ class MagazineFrameContainer extends Component {
                                   Type={item[1].type}
                                   DisplayMode={DisplayMode}
                                   Article={item[1].article}
-                                  From={'HOME_PAGE'}/>
+                                  DataURL={item[1].data_url}
+                                  From={From}/>
                 </View>;
             } else {
                 return <View style={{marginHorizontal: Dimensions.get('window').width * 0.02}}>
@@ -159,17 +162,15 @@ class MagazineFrameContainer extends Component {
                                   DisplayMode={DisplayMode}
                                   sizeMB={item[0].size_mb}
                                   Article={item[0].article}
-                                  From={'HOME_PAGE'}/>
+                                  DataURL={item[0].data_url}
+                                  From={From}/>
                 </View>;
             }
         }
     };
 
     render() {
-        const {Data} = this.props;
-        const {DisplayMode} = this.props;
-        //console.log('Data : ', Data);
-        //console.log('displayMode : ', DisplayMode);
+        const {Data, DisplayMode} = this.props;
 
         return (
             <FlatList

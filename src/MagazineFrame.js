@@ -16,6 +16,8 @@ const s3 = new AWS.S3({
 
 import SQLite from 'react-native-sqlite-2';
 import CacheImageComponent from './Components/CacheImageComponent';
+import {save_item} from './Store/Actions';
+import {Auth} from 'aws-amplify';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 const DEVICE_WIDTH = Dimensions.get('window').width;
@@ -37,9 +39,7 @@ class MagazineFrame extends Component {
     }
 
     navigateToMagazine = () => {
-        const {navigation, From, Name, Type, sizeMB, ViewedCount, Year, TeaserInfo, Article} = this.props;
-
-        console.log('Name:Name: ', Name);
+        const {navigation, From, Name, Type, sizeMB, ViewedCount, Year, TeaserInfo, Article, DataURL} = this.props;
 
         if (Type === 'article') {
             navigation.navigate('ArticleComponent', {
@@ -51,7 +51,7 @@ class MagazineFrame extends Component {
                 article: Article,
             });
         } else {
-            navigation.navigate('MagazineComponent', {name: Name, from: From, sizeMB: sizeMB});
+            navigation.navigate('MagazineComponent', {name: Name, from: From, sizeMB: sizeMB, dataUrl: DataURL});
         }
     };
 
@@ -72,34 +72,48 @@ class MagazineFrame extends Component {
         );
     };
 
-    saveToDatabase = () => {
+    saveToDatabase = async () => {
+        const {Name, TeaserInfo, ViewedCount, Year, Type, DisplayMode, sizeMB} = this.props;
+        console.log('Name: ', Name);
+        console.log('TeaserInfo: ', TeaserInfo);
+        console.log('ViewedCount: ', ViewedCount);
+        console.log('Type: ', Type);
+        console.log('DisplayMode: ', DisplayMode);
+        console.log('sizeMB: ', sizeMB);
+
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.Name + '.pdf',
         };
         const url = s3.getSignedUrl('getObject', params);
 
-        RNFetchBlob.fetch('GET', url)
-            .then((res) => {
-                console.log('res: ', res);
+        RNFetchBlob.config({
+            // add this option that makes response data to be stored as a file,
+            // this is much more performant.
+            fileCache: true,
+            appendExt: 'pdf',
+            mediaScannable: false,
+        })
+            .fetch('GET', url)
+            .then(async (res) => {
+                // console.log('res: ', res.path());
 
                 let status = res.info().status;
 
                 if (status === 200) {
                     // the conversion is done in native code
-                    let magazine_base64 = res.base64();
-
-                    const Name = this.props.Name;
-                    const Year = this.props.Year;
+                    const user = await Auth.currentAuthenticatedUser();
+                    const userPhone = user.attributes.phone_number.toString();
 
                     db.transaction((tx) => {
-                        //tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20), year INT(10), magazin_base64 CLOB)', []);
-                        tx.executeSql('INSERT INTO table_magazines (name, year, magazine_base64) VALUES (?,?,?)', [Name, Year, magazine_base64]);
+                        tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20),user_phone VARCHAR(15),type VARCHAR(20),teaser_info VARCHAR(50),viewed_count INT(10),year INT(10),size_mb INT(10),data_url VARCHAR(150))', []);
+                        tx.executeSql('INSERT INTO table_magazines (name, user_phone, type, teaser_info, viewed_count, year, size_mb, data_url) VALUES (?,?,?,?,?,?,?,?)', [Name, userPhone, Type, TeaserInfo, ViewedCount, Year, sizeMB, res.path()]);
                         tx.executeSql('SELECT * FROM table_magazines', [], (tx, results) => {
                             for (let i = 0; i < results.rows.length; i++) {
                                 console.log('item:', results.rows.item(i));
                             }
+                            this.props.save_item(results.rows.item(results.rows.length - 1));
                         });
                     });
 
@@ -109,6 +123,7 @@ class MagazineFrame extends Component {
                 }
             })
             .catch((errorMessage, statusCode) => {
+                console.log('errrorMessage: ', errorMessage);
             });
     };
 
@@ -130,7 +145,7 @@ class MagazineFrame extends Component {
                     height: containerHeight,
                 }]}
                 onPress={() => this.navigateToMagazine()}
-                onLongPress={() => this.saveMagazine()}>
+                onLongPress={() => Type === 'article' ? null : this.saveMagazine()}>
                 <CacheImageComponent style={styles.coverStyle} uri={path} coverName={Name}/>
                 <View style={styles.magazineInfoContainerStyle}>
                     <Text style={styles.magazineNameTextStyle}>{Name}</Text>
@@ -204,7 +219,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => {
-    return {};
+    return {
+        save_item: (item) => dispatch(save_item(item)),
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MagazineFrame));

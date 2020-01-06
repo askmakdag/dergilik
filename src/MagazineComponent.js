@@ -13,13 +13,11 @@ const s3 = new AWS.S3({
     },
 });
 
-import SQLite from 'react-native-sqlite-2';
 import RNFetchBlob from 'rn-fetch-blob';
 import CacheImageComponent from './Components/CacheImageComponent';
-
-const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 let Spinner = require('react-native-spinkit');
 import {Button} from 'react-native-elements';
+import {connect} from 'react-redux';
 
 class MagazineComponent extends Component {
 
@@ -27,6 +25,7 @@ class MagazineComponent extends Component {
         super(props);
         this.state = {
             magazine_path: {},
+            saved_path: {},
             cover_path: this.getUrl(),
             visible: false,
         };
@@ -34,6 +33,8 @@ class MagazineComponent extends Component {
 
     componentWillMount() {
         this.fetchPdf();
+        console.log('this.props.navigation.state.params.dataUrl: ', this.props.navigation.state.params.dataUrl);
+        this.setState({saved_path: {uri: Platform.OS === 'android' ? 'file://' + this.props.navigation.state.params.dataUrl : '' + this.props.navigation.state.params.dataUrl}});
     }
 
     fetchPdf = () => {
@@ -75,8 +76,6 @@ class MagazineComponent extends Component {
     };
 
     getUrl() {
-        console.log('this.props.navigation.state.params.name: ', this.props.navigation.state.params.name);
-
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + ' Cover.png',
@@ -85,15 +84,15 @@ class MagazineComponent extends Component {
     }
 
     render() {
-        const {cover_path, visible} = this.state;
-        console.log('cover_path: ', cover_path);
+        const {cover_path, visible, saved_path, magazine_path} = this.state;
+        const {name, sizeMB, from} = this.props.navigation.state.params;
 
         return <View style={styles.mainContainer}>
             <View display={visible ? 'none' : 'flex'} style={styles.teaserContainerStyle}>
                 <View style={styles.coverImageContainer}>
                     <CacheImageComponent style={styles.coverStyle} uri={cover_path}
-                                         coverName={this.props.navigation.state.params.name}/>
-                    <Text style={styles.sizeTextStyle}>{this.props.navigation.state.params.sizeMB} MB</Text>
+                                         coverName={name}/>
+                    <Text style={styles.sizeTextStyle}>{sizeMB} MB</Text>
                     <Button title={'OKU'} buttonStyle={styles.readButtonStyle}
                             onPress={() => this.setState({visible: true})}/>
                 </View>
@@ -103,7 +102,7 @@ class MagazineComponent extends Component {
                 <Pdf
                     horizontal={true}
                     enablePaging={true}
-                    source={this.state.magazine_path}
+                    source={from === 'SAVED' ? saved_path : magazine_path}
                     style={styles.pdfStyle}
                     activityIndicator={this.loadSpinner()}
                 />
@@ -122,8 +121,6 @@ const styles = StyleSheet.create({
         flex: 1,
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
     pdfContainerStyle: {
         height: Dimensions.get('window').height,
@@ -193,4 +190,14 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withNavigation(MagazineComponent);
+const mapStateToProps = state => {
+    return {
+        saved: state.magazinesStore.saved,
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigation(MagazineComponent));

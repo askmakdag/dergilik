@@ -3,8 +3,11 @@ import {View} from 'react-native';
 import MagazinFrameContainer from '../MagazineFrameContainer';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {add_feed, add_magazine, add_newspaper} from '../Store/Actions/index';
+import {add_feed, add_magazine, add_newspaper, get_all_saved} from '../Store/Actions/index';
+import SQLite from 'react-native-sqlite-2';
+import {Auth} from 'aws-amplify';
 
+const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
 class HomeScreen extends Component {
 
@@ -75,7 +78,27 @@ class HomeScreen extends Component {
                 console.log('Get API Hatası: ', error);
             });
         this.setState({sorted_feed: this.arrangeFeed(this.props.feed)});
+        this.getAllSaved();
     }
+
+    getAllSaved = async () => {
+        const user = Auth.currentAuthenticatedUser();
+        const userPhone = user.attributes.phone_number.toString();
+
+        const items = [];
+        await db.transaction((tx) => {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20),user_phone VARCHAR(15),type VARCHAR(20),teaser_info VARCHAR(50),viewed_count INT(10),year INT(10),size_mb INT(10),data_url VARCHAR(150))', []);
+            tx.executeSql('SELECT * FROM table_magazines', [], (tx, results) => {
+                for (let i = 0; i < results.rows.length; i++) {
+                    console.log('item:', results.rows.item(i));
+                    if (results.rows.item(i).user_phone === userPhone) {
+                        items.push(results.rows.item(i));
+                    }
+                }
+                this.props.get_all_saved(items);
+            });
+        });
+    };
 
     arrangeFeed = (feed) => {
         const items = [];
@@ -111,6 +134,7 @@ class HomeScreen extends Component {
                                        DisplayMode={displayMode}
                                        changeMode={(mode) => this.changeDisplayMode(mode)}
                                        filterBy={(value) => this.filterBy(value)}
+                                       From={'HOMESCREEN'}
                                        sortBy={(type) => this.sortBy(type)}/>
             </View>
         );
@@ -128,6 +152,7 @@ const mapDispatchToProps = dispatch => {
         add_feed: (feed) => dispatch(add_feed(feed)),
         add_magazine: (magazine) => dispatch(add_magazine(magazine)),
         add_newspaper: (newspaper) => dispatch(add_newspaper(newspaper)),
+        get_all_saved: (saved_items) => dispatch(get_all_saved(saved_items)),
     };
 };
 

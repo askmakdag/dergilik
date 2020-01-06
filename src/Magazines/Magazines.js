@@ -93,6 +93,7 @@ class Magazines extends Component {
                                        DisplayMode={displayMode}
                                        changeMode={(mode) => this.changeDisplayMode(mode)}
                                        filterBy={(value) => this.filterBy(value)}
+                                       From={'MAGAZINES'}
                                        sortBy={(type) => this.sortBy(type)}/>
             </View>
         );

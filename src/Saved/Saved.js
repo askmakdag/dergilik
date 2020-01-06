@@ -1,81 +1,113 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, FlatList, Dimensions} from 'react-native';
-import MagazinFrame from '../MagazineFrame';
-import {withNavigation} from 'react-navigation';
-import SQLite from 'react-native-sqlite-2';
-import {Icon} from 'react-native-elements';
-import generalSettings from '../generalSettings';
-
-const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
+import {View} from 'react-native';
+import {connect} from 'react-redux';
+import MagazinFrameContainer from '../MagazineFrameContainer';
 
 class Saved extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            magazins: [],
+            sorted_saved: [],
+            displayMode: 'GALERI_MODE',
         };
     }
 
-    static navigationOptions = ({navigation}) => {
-        return {
-            headerTitle: 'Kaydettiklerim',
-            headerRight: (
-                <Icon
-                    name='settings'
-                    onPress={() => navigation.navigate('Settings')}
-                    containerStyle={{marginHorizontal: 10}}
-                    color={'#fff'}
-                />
-            ),
-        };
+    static navigationOptions = {
+        title: 'Dergiler',
     };
 
-    async componentWillMount() {
-        let magazinsArr = [];
-        await db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM table_magazins', [], (tx, results) => {
-                    for (let i = 0; i < results.rows.length; i++) {
-                        magazinsArr.push({name: results.rows.item(i).name, year: results.rows.item(i).year});
-                    }
-                    console.log('magazinsArr: ', magazinsArr);
-                    this.setState({magazins: magazinsArr});
-                },
-            );
-        });
+    componentWillMount() {
+        this.setState({sorted_saved: this.arrangeSavedItems(this.props.saved)});
+    }
+
+    sortBy = (type) => {
+        let json = this.props.saved;
+
+        if (type === 'DATE') {
+            json.sort(function (a, b) {
+                let parts_a = a.year.split('/');
+                let parts_b = b.year.split('/');
+
+                const date_a = new Date(parts_a[2], parts_a[1] - 1, parts_a[0]);
+                const date_b = new Date(parts_b[2], parts_b[1] - 1, parts_b[0]);
+
+                return date_a - date_b;
+            });
+            console.log('sorted json by DATE: ', json);
+            this.setState({sorted_saved: this.arrangeSavedItems(json)});
+        }
+
+        if (type === 'NAME') {
+            json.sort(function (a, b) {
+                return ('' + a.name).localeCompare(b.name);
+            });
+            console.log('sorted json by NAME: ', json);
+            this.setState({sorted_saved: this.arrangeSavedItems(json)});
+        }
+    };
+
+    arrangeSavedItems = (saved_items) => {
+        const items = [];
+        for (let i = 0; i < saved_items.length; i++) {
+            if (i % 2 === 0) {
+                if (typeof saved_items[i + 1] !== 'undefined') {
+                    items.push([saved_items[i], saved_items[i + 1]]);
+                } else {
+                    items.push([saved_items[i]]);
+                }
+            }
+        }
+
+        return items;
+    };
+
+    filterBy = (value) => {
+        let json = this.props.saved;
+        const result = json.filter(word => word.name.indexOf(value) >= 0);
+        if (result.length === 0) {
+            /** Aranan bulunamaz ise hepsini listele.*/
+        } else {
+            /** Aranan bulunur ise arananı listele.*/
+            this.setState({sorted_saved: this.arrangeSavedItems(result)});
+        }
+    };
+
+    changeDisplayMode = (mode) => {
+        console.log('mode changed to: ', mode);
+        this.setState({displayMode: mode});
+    };
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({sorted_saved: this.arrangeSavedItems(nextProps.saved)});
     }
 
     render() {
-        const {magazins} = this.state;
+        const {displayMode} = this.state;
 
         return (
-            <View style={styles.mainContainer}>
-                <FlatList
-                    data={magazins}
-                    renderItem={({item}) => (
-                        <MagazinFrame magazinName={item.name} magazinYear={item.year} from={'SAVED_PAGE'}/>
-                    )}
-                    keyExtractor={item => item.magazinId}
-                    refreshing={this.state.refreshing}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{flexGrow: 1}}
-                    style={{flex: 1}}
-                />
+            <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+                <MagazinFrameContainer Type={'MAGAZINE'}
+                                       Data={displayMode === 'LIST_MODE' ? this.props.saved : this.state.sorted_saved}
+                                       DisplayMode={displayMode}
+                                       changeMode={(mode) => this.changeDisplayMode(mode)}
+                                       filterBy={(value) => this.filterBy(value)}
+                                       From={"SAVED"}
+                                       sortBy={(type) => this.sortBy(type)}/>
             </View>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: Dimensions.get('window').width,
-        //marginLeft: '2.5%',
-        marginTop: 8,
-    },
-});
+const mapStateToProps = state => {
+    return {
+        saved: state.magazinesStore.saved,
+    };
+};
 
-export default withNavigation(Saved);
+
+const mapDispatchToProps = dispatch => {
+    return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Saved);
