@@ -3,9 +3,9 @@ import {View} from 'react-native';
 import MagazinFrameContainer from '../MagazineFrameContainer';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import {add_feed, add_magazine, add_newspaper, get_all_saved} from '../Store/Actions/index';
 import SQLite from 'react-native-sqlite-2';
 import {Auth} from 'aws-amplify';
+import {add_feed, add_magazine, add_newspaper, get_all_saved} from '../Store/Actions/index';
 
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 
@@ -36,7 +36,7 @@ class HomeScreen extends Component {
 
                 return date_a - date_b;
             });
-            console.log('sorted json by DATE: ', json);
+            //console.log('sorted json by DATE: ', json);
             this.setState({sorted_feed: this.arrangeFeed(json)});
         }
 
@@ -44,7 +44,7 @@ class HomeScreen extends Component {
             json.sort(function (a, b) {
                 return ('' + a.name).localeCompare(b.name);
             });
-            console.log('sorted json by NAME: ', json);
+            //console.log('sorted json by NAME: ', json);
             this.setState({sorted_feed: this.arrangeFeed(json)});
         }
     };
@@ -64,14 +64,9 @@ class HomeScreen extends Component {
         await axios.get('https://u3d29ombf7.execute-api.us-east-1.amazonaws.com/v1_0_0')
             .then(response => {
                     console.log('Get API Response: ', response);
-
-                    let feed_magazine = response.data.Items.filter(item => item.type === 'magazine');
-                    let feed_newspaper = response.data.Items.filter(item => item.type === 'newspaper');
-                    let feed_article = response.data.Items.filter(item => item.type === 'article');
-
-                    this.props.add_feed(feed_article);
-                    this.props.add_magazine(feed_magazine);
-                    this.props.add_newspaper(feed_newspaper);
+                    this.props.add_feed(response.data.Items.filter(item => item.type === 'article'));
+                    this.props.add_magazine(response.data.Items.filter(item => item.type === 'magazine'));
+                    this.props.add_newspaper(response.data.Items.filter(item => item.type === 'newspaper'));
                 },
             )
             .catch(function (error) {
@@ -82,7 +77,7 @@ class HomeScreen extends Component {
     }
 
     getAllSaved = async () => {
-        const user = Auth.currentAuthenticatedUser();
+        const user = await Auth.currentAuthenticatedUser();
         const userPhone = user.attributes.phone_number.toString();
 
         const items = [];
@@ -111,12 +106,11 @@ class HomeScreen extends Component {
                 }
             }
         }
-
         return items;
     };
 
     changeDisplayMode = (mode) => {
-        console.log('mode changed to: ', mode);
+        //console.log('mode changed to: ', mode);
         this.setState({displayMode: mode});
     };
 
@@ -125,12 +119,13 @@ class HomeScreen extends Component {
     }
 
     render() {
-        const {displayMode} = this.state;
+        const {displayMode, sorted_feed} = this.state;
+        const {feed} = this.props;
 
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <MagazinFrameContainer Type={'MIX'}
-                                       Data={displayMode === 'LIST_MODE' ? this.props.feed : this.state.sorted_feed}
+                                       Data={displayMode === 'LIST_MODE' ? feed : sorted_feed}
                                        DisplayMode={displayMode}
                                        changeMode={(mode) => this.changeDisplayMode(mode)}
                                        filterBy={(value) => this.filterBy(value)}

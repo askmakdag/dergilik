@@ -46,14 +46,14 @@ class MagazineFrameContainer extends Component {
 
     renderHeader = () => {
         const {Type, DisplayMode} = this.props;
-
+        const placeHolder = Type === 'MIX' ? 'Yayın Ara' : Type === 'MAGAZINE' ? 'Dergi Ara' : Type === 'SAVED' ? 'Kaydedilenlerde Ara' : 'Gazete Ara';
         return (
             <View style={styles.mainContainer}>
                 <View style={{flex: 1, flexDirection: 'row', marginHorizontal: Dimensions.get('window').width * 0.02}}>
                     <TextInput
                         style={styles.searchBoxStyle}
                         placeholderTextColor={'#8E9494'}
-                        placeholder={Type === 'MIX' ? 'Yayın Ara' : Type === 'MAGAZINE' ? 'Dergi Ara' : 'Gazete Ara'}
+                        placeholder={placeHolder}
                         onChangeText={value => this.onChangeText('search_text', value)}
                         multiline={false}
                         autoFocus={false}

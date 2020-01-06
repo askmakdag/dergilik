@@ -45,54 +45,6 @@ const HomeStack = createStackNavigator({
             },
         },
     },
-    MagazineFrameContainer: {
-        screen: MagazineFrameContainer,
-        navigationOptions: {
-            headerBackTitle: 'Geri',
-            headerBackTitleStyle: {
-                color: '#fff',
-            },
-            headerStyle: {
-                backgroundColor: headerBackgroundColor,
-            },
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                color: headerTitleColor,
-            },
-        },
-    },
-    MagazineFrame: {
-        screen: MagazineFrame,
-        navigationOptions: {
-            headerBackTitle: 'Geri',
-            headerBackTitleStyle: {
-                color: '#fff',
-            },
-            headerStyle: {
-                backgroundColor: headerBackgroundColor,
-            },
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                color: headerTitleColor,
-            },
-        },
-    },
-    MagazineComponent: {
-        screen: MagazineComponent,
-        navigationOptions: {
-            headerBackTitle: 'Geri',
-            headerBackTitleStyle: {
-                color: '#fff',
-            },
-            headerStyle: {
-                backgroundColor: headerBackgroundColor,
-            },
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                color: headerTitleColor,
-            },
-        },
-    },
     ArticleComponent: {
         screen: ArticleComponent,
         navigationOptions: {
@@ -195,6 +147,70 @@ const MagazinesdStack = createStackNavigator({
             },
         },
     },
+    MagazineFrameContainer: {
+        screen: MagazineFrameContainer,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineFrame: {
+        screen: MagazineFrame,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineComponent: {
+        screen: MagazineComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    ArticleComponent: {
+        screen: ArticleComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
 });
 const NewspapersStack = createStackNavigator({
     Newspapers: {
@@ -213,10 +229,138 @@ const NewspapersStack = createStackNavigator({
             },
         },
     },
+    MagazineFrameContainer: {
+        screen: MagazineFrameContainer,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineFrame: {
+        screen: MagazineFrame,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineComponent: {
+        screen: MagazineComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    ArticleComponent: {
+        screen: ArticleComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
 });
 const SavedStack = createStackNavigator({
     Saved: {
         screen: Saved,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineFrameContainer: {
+        screen: MagazineFrameContainer,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineFrame: {
+        screen: MagazineFrame,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    MagazineComponent: {
+        screen: MagazineComponent,
+        navigationOptions: {
+            headerBackTitle: 'Geri',
+            headerBackTitleStyle: {
+                color: '#fff',
+            },
+            headerStyle: {
+                backgroundColor: headerBackgroundColor,
+            },
+            headerTitleStyle: {
+                fontWeight: 'bold',
+                color: headerTitleColor,
+            },
+        },
+    },
+    ArticleComponent: {
+        screen: ArticleComponent,
         navigationOptions: {
             headerBackTitle: 'Geri',
             headerBackTitleStyle: {

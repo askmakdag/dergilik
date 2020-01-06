@@ -4,6 +4,10 @@ import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
 import aws_credentials from '../aws_credentials';
+import RNFetchBlob from 'rn-fetch-blob';
+import CacheImageComponent from './Components/CacheImageComponent';
+import {Button} from 'react-native-elements';
+import {connect} from 'react-redux';
 
 const s3 = new AWS.S3({
     region: aws_credentials.region,
@@ -12,12 +16,7 @@ const s3 = new AWS.S3({
         secretAccessKey: aws_credentials.secretAccessKey,
     },
 });
-
-import RNFetchBlob from 'rn-fetch-blob';
-import CacheImageComponent from './Components/CacheImageComponent';
 let Spinner = require('react-native-spinkit');
-import {Button} from 'react-native-elements';
-import {connect} from 'react-redux';
 
 class MagazineComponent extends Component {
 
@@ -31,9 +30,15 @@ class MagazineComponent extends Component {
         };
     };
 
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: navigation.state.params.name,
+        };
+    };
+
+
     componentWillMount() {
         this.fetchPdf();
-        console.log('this.props.navigation.state.params.dataUrl: ', this.props.navigation.state.params.dataUrl);
         this.setState({saved_path: {uri: Platform.OS === 'android' ? 'file://' + this.props.navigation.state.params.dataUrl : '' + this.props.navigation.state.params.dataUrl}});
     }
 
@@ -90,8 +95,7 @@ class MagazineComponent extends Component {
         return <View style={styles.mainContainer}>
             <View display={visible ? 'none' : 'flex'} style={styles.teaserContainerStyle}>
                 <View style={styles.coverImageContainer}>
-                    <CacheImageComponent style={styles.coverStyle} uri={cover_path}
-                                         coverName={name}/>
+                    <CacheImageComponent style={styles.coverStyle} uri={cover_path} coverName={name}/>
                     <Text style={styles.sizeTextStyle}>{sizeMB} MB</Text>
                     <Button title={'OKU'} buttonStyle={styles.readButtonStyle}
                             onPress={() => this.setState({visible: true})}/>
@@ -152,7 +156,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,
-        //marginTop: Dimensions.get('window').height * 0.15,
         backgroundColor: '#123456',
     },
     teaserMainContainerStyle: {

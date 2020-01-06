@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
-import {Dimensions, Image, Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {Dimensions, Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import {withNavigation} from 'react-navigation';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
 import aws_credentials from '../aws_credentials';
 import RNFetchBlob from 'rn-fetch-blob';
 import {connect} from 'react-redux';
+import SQLite from 'react-native-sqlite-2';
+import CacheImageComponent from './Components/CacheImageComponent';
+import {get_all_saved, save_item} from './Store/Actions';
+import {Auth} from 'aws-amplify';
 
 const s3 = new AWS.S3({
     region: aws_credentials.region,
@@ -13,12 +17,6 @@ const s3 = new AWS.S3({
         secretAccessKey: aws_credentials.secretAccessKey,
     },
 });
-
-import SQLite from 'react-native-sqlite-2';
-import CacheImageComponent from './Components/CacheImageComponent';
-import {save_item} from './Store/Actions';
-import {Auth} from 'aws-amplify';
-
 const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
 const DEVICE_WIDTH = Dimensions.get('window').width;
 
@@ -60,26 +58,52 @@ class MagazineFrame extends Component {
         await this.setState({path: path});
     };
 
+    removeFromDatabase = async (name) => {
+        const items = this.props.saved.filter((item) => item.name !== name);
+        await this.props.get_all_saved(items);
+        await db.transaction((tx) => {
+            tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
+            tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20),user_phone VARCHAR(15),type VARCHAR(20),teaser_info VARCHAR(50),viewed_count INT(10),year INT(10),size_mb INT(10),data_url VARCHAR(150))', []);
+            for (let i = 0; i < items.length; i++) {
+                tx.executeSql('INSERT INTO table_magazines (name, user_phone, type, teaser_info, viewed_count, year, size_mb, data_url) VALUES (?,?,?,?,?,?,?,?)', [items[i].name, items[i].user_phone, items[i].type, items[i].teaser_info, items[i].viewed_count, items[i].year, items[i].size_mb, items[i].data_url]);
+            }
+        });
+
+    };
+
     saveMagazine = () => {
-        Alert.alert(
-            this.props.Name,
-            'Dergiyi kaydetmek istediğinize emin misiniz?',
-            [
-                {text: 'İptal', style: 'cancel'},
-                {text: 'Kaydet', onPress: () => this.saveToDatabase()},
-            ],
-            {cancelable: false},
-        );
+        if (this.props.From === 'SAVED') {
+            Alert.alert(
+                this.props.Name,
+                'İndirilenlerden kaldırmak istediğinize emin misiniz?',
+                [
+                    {text: 'İptal', style: 'cancel'},
+                    {text: 'Kaldır', onPress: () => this.removeFromDatabase(this.props.Name)},
+                ],
+                {cancelable: false},
+            );
+        } else {
+            Alert.alert(
+                this.props.Name,
+                'Dergiyi kaydetmek istediğinize emin misiniz?',
+                [
+                    {text: 'İptal', style: 'cancel'},
+                    {text: 'Kaydet', onPress: () => this.saveToDatabase()},
+                ],
+                {cancelable: false},
+            );
+        }
     };
 
     saveToDatabase = async () => {
-        const {Name, TeaserInfo, ViewedCount, Year, Type, DisplayMode, sizeMB} = this.props;
-        console.log('Name: ', Name);
-        console.log('TeaserInfo: ', TeaserInfo);
-        console.log('ViewedCount: ', ViewedCount);
-        console.log('Type: ', Type);
-        console.log('DisplayMode: ', DisplayMode);
-        console.log('sizeMB: ', sizeMB);
+        const {Name, TeaserInfo, ViewedCount, Year, Type, sizeMB, saved} = this.props;
+
+        for (let i = 0; i < saved.length; i++) {
+            if (saved[i].name === Name) {
+                Alert.alert(this.props.Name + ' zaten kayıltı.');
+                return null;
+            }
+        }
 
         const params = {
             Bucket: aws_credentials.s3Bucket,
@@ -97,16 +121,14 @@ class MagazineFrame extends Component {
             .fetch('GET', url)
             .then(async (res) => {
                 // console.log('res: ', res.path());
-
                 let status = res.info().status;
-
                 if (status === 200) {
                     // the conversion is done in native code
                     const user = await Auth.currentAuthenticatedUser();
                     const userPhone = user.attributes.phone_number.toString();
 
-                    db.transaction((tx) => {
-                        tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
+                    await db.transaction((tx) => {
+                        //tx.executeSql('DROP TABLE IF EXISTS table_magazines', []);
                         tx.executeSql('CREATE TABLE IF NOT EXISTS table_magazines(magazineId INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(20),user_phone VARCHAR(15),type VARCHAR(20),teaser_info VARCHAR(50),viewed_count INT(10),year INT(10),size_mb INT(10),data_url VARCHAR(150))', []);
                         tx.executeSql('INSERT INTO table_magazines (name, user_phone, type, teaser_info, viewed_count, year, size_mb, data_url) VALUES (?,?,?,?,?,?,?,?)', [Name, userPhone, Type, TeaserInfo, ViewedCount, Year, sizeMB, res.path()]);
                         tx.executeSql('SELECT * FROM table_magazines', [], (tx, results) => {
@@ -116,7 +138,6 @@ class MagazineFrame extends Component {
                             this.props.save_item(results.rows.item(results.rows.length - 1));
                         });
                     });
-
                 } else {
                     // handle other status codes
                     console.log('hata!');
@@ -130,7 +151,6 @@ class MagazineFrame extends Component {
     render() {
         const {path} = this.state;
         const {Name, TeaserInfo, ViewedCount, Year, Type, DisplayMode} = this.props;
-
         const containerWidth = DisplayMode === 'LIST_MODE' ? DEVICE_WIDTH * 0.88 : DEVICE_WIDTH * 0.47;
         const containerHeight = DisplayMode === 'LIST_MODE' ? DEVICE_WIDTH * 1.5 : DEVICE_WIDTH * 0.88;
         const containerArticleHeight = DisplayMode === 'LIST_MODE' ? (Type === 'article' ? DEVICE_WIDTH * 1.8 : DEVICE_WIDTH * 1.5) : DEVICE_WIDTH * 1.2;
@@ -138,11 +158,9 @@ class MagazineFrame extends Component {
         return (
             <TouchableOpacity
                 style={Type === 'article' ? [styles.containerArticle, {
-                    width: containerWidth,
-                    height: containerArticleHeight,
+                    width: containerWidth, height: containerArticleHeight,
                 }] : [styles.container, {
-                    width: containerWidth,
-                    height: containerHeight,
+                    width: containerWidth, height: containerHeight,
                 }]}
                 onPress={() => this.navigateToMagazine()}
                 onLongPress={() => Type === 'article' ? null : this.saveMagazine()}>
@@ -165,7 +183,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         justifyContent: 'center',
-        //height: Dimensions.get('window').width * 0.88,
         backgroundColor: '#fff',
         marginVertical: 10,
     },
@@ -215,12 +232,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         magazines: state.magazinesStore.magazines,
+        saved: state.magazinesStore.saved,
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
         save_item: (item) => dispatch(save_item(item)),
+        get_all_saved: (saved_items) => dispatch(get_all_saved(saved_items)),
     };
 };
 

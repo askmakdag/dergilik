@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
 import MagazinFrameContainer from '../MagazineFrameContainer';
+import {Icon} from 'react-native-elements';
 
 class Saved extends Component {
 
@@ -13,8 +14,18 @@ class Saved extends Component {
         };
     }
 
-    static navigationOptions = {
-        title: 'Dergiler',
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: 'Kaydettiklerim',
+            headerRight: (
+                <Icon
+                    name='settings'
+                    onPress={() => navigation.navigate('Settings')}
+                    containerStyle={{marginHorizontal: 10}}
+                    color={'#fff'}
+                />
+            ),
+        };
     };
 
     componentWillMount() {
@@ -87,7 +98,7 @@ class Saved extends Component {
 
         return (
             <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                <MagazinFrameContainer Type={'MAGAZINE'}
+                <MagazinFrameContainer Type={'SAVED'}
                                        Data={displayMode === 'LIST_MODE' ? this.props.saved : this.state.sorted_saved}
                                        DisplayMode={displayMode}
                                        changeMode={(mode) => this.changeDisplayMode(mode)}
