@@ -36,7 +36,6 @@ class MagazineComponent extends Component {
         };
     };
 
-
     componentWillMount() {
         this.fetchPdf();
         this.setState({saved_path: {uri: Platform.OS === 'android' ? 'file://' + this.props.navigation.state.params.dataUrl : '' + this.props.navigation.state.params.dataUrl}});

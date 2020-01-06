@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, Dimensions, View, Platform, ScrollView, Text} from 'react-native';
+import {StyleSheet, Dimensions, View, ScrollView, Text} from 'react-native';
 import AWS from 'aws-sdk/dist/aws-sdk-react-native';
-import Pdf from 'react-native-pdf';
 import {withNavigation} from 'react-navigation';
 import aws_credentials from '../aws_credentials';
 
@@ -13,15 +12,7 @@ const s3 = new AWS.S3({
     },
 });
 
-import SQLite from 'react-native-sqlite-2';
-import RNFetchBlob from 'rn-fetch-blob';
 import CacheImageComponent from './Components/CacheImageComponent';
-
-const db = SQLite.openDatabase({name: 'dataA1.db', location: 'default'});
-let Spinner = require('react-native-spinkit');
-import {Button} from 'react-native-elements';
-import {countries} from '../assets/countries';
-import CountryLabelComponent from './Components/CountryLabelComponent';
 
 class ArticleComponent extends Component {
 
@@ -36,9 +27,13 @@ class ArticleComponent extends Component {
         };
     };
 
-    getUrl(ext) {
-        console.log('this.props.navigation.state.params.name: ', this.props.navigation.state.params.name);
+    static navigationOptions = ({navigation}) => {
+        return {
+            headerTitle: navigation.state.params.name,
+        };
+    };
 
+    getUrl(ext) {
         const params = {
             Bucket: aws_credentials.s3Bucket,
             Key: 'uploads/' + this.props.navigation.state.params.name + ext,
@@ -78,7 +73,6 @@ class ArticleComponent extends Component {
     render() {
         const {header_pic_path, articleParts} = this.state;
         const {teaserInfo, name, year} = this.props.navigation.state.params;
-        console.log('header_pic_path: ', header_pic_path);
 
         return <ScrollView>
             <View style={styles.mainContainer}>
